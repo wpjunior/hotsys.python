@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <title>HotSys</title>
+    <script src="/static/js/jquery-min.js"></script>
+    <script src="/static/js/jquery-ui.min.js"></script>
+    <script src="/static/js/underscore-min.js"></script>
+    <script src="/static/js/backbone-min.js"></script>
+    
+    <script src="/static/js/produto.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function (e) {
+          Backbone.history.start();
+      });
+    </script>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/ui-lightness/jquery-ui.css"/>
+  </head>
+  <body>
+    <div id="content">
+      <div id="menu">
+        <a href="#produtos/">Produtos</a>
+      </div>
+      <div id="container"></div>
+    </div>
+    <div id="templates">
+      <script id="adddprodutoview-tmpl" type="text/template">
+        <form id="addproduto-form">
+          <label>Nome: *</label>
+          <input name="nome" type="text/input" class="required"></input>
+
+          <label>Quantidade:</label>
+          <input name="qtde" type="text/input"></input>
+
+          <label>Valor: *</label>
+          <input name="valor" type="text/input" class="required"></input>
+          <label><i>* Campos obrigatórios</i></label>
+         </form>
+       </script>
+       <script id="produtoview-template" type="text/template">
+         <td><%= object.id %></td>
+         <td><%= object.get("nome") %></td>
+         <td><%= object.get("qtde") %></td>
+         <td><%= object.get("valor") %></td>
+       </script>
+
+       <script id="produtosview-template" type="text/template">
+         <div class=" ui-widget-header ui-corner-all">
+           Produtos
+         </div>
+         <div class="toolbar">
+           <a id="add_produto" href="#">Adicionar</a>
+           <a id="edit_produto" href="#">Editar</a>
+           <a id="delete_produto" href="#">Apagar</a>
+         </div>
+         <div class="list">
+           <table>
+             <thead>
+               <tr class="ui-widget-header">
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Quantidade</th>
+                <th>Valor</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </script>
+    </div>
+  </body>
+</html>

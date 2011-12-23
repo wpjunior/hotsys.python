@@ -1,0 +1,8 @@
+body {font-size: 11px; background-color: white;}
+#content {margin-top: 20px; width: 600px; margin: 0px auto; height: 480px;}
+.box {width: 600px; height: 460px;}
+#produtos table {width: 100%;}
+form label {display: block; padding-top: 5px;}
+form input {padding: 5px;}
+tr.selected td{background-color:#B0BED9;color:white;}
+.list {height: 460px;}
