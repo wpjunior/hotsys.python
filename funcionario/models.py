@@ -22,34 +22,22 @@
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from django.db import models
-from quarto.models import Estadia
 
-class Produto(models.Model):
-    """
-    Classe Produto
-    
-    representa todo produto cadastrado no estoque da pousada.
-    attributos:
-    nome: nome real do produto
-    valor: valor de venda do produto
-    qtde: quantidade em estoque
-    """
-    nome = models.CharField(max_length=20)
-    valor = models.DecimalField(decimal_places=2, max_digits=10)
-    qtde = models.IntegerField(null=True, blank=True)
-    
-    class Meta:
-        db_table = "produto"
+FUNCIONARIO_TIPO = (
+    ('g', "Gestor"),
+    ('b', "Balconista"),
+    ('r', "Recepcionista"))
 
-class ProdutoItem(models.Model):
-    """
-    Classe ProdutoItem
-    representa a ligação de um produto consumido na estadia.
-    """
-    produto = models.ForeignKey(Produto)
-    estadia = models.ForeignKey(Estadia)
-    qtde = models.IntegerField()
-    valor_total = models.DecimalField(decimal_places=2, max_digits=10)
+class Funcionario(models.Model):
+    nome = models.CharField(max_length=100)
+    email = models.EmailField()
+    tipo = models.CharField(max_length=1,
+                            choices=FUNCIONARIO_TIPO)
+
+    usuario = models.CharField(max_length=50)
+    senha = models.CharField(max_length=40)
+    ativo = models.BooleanField()
+    cpf = models.CharField(max_length=16)
 
     class Meta:
-        db_table = "produto_item"
+        db_table = "funcionario"
