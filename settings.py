@@ -87,6 +87,7 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
+    'django.contrib.contenttypes',
     'hotsys.produto',
     'hotsys.quarto',
     'hotsys.hospede',

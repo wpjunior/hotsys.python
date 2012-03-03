@@ -22,11 +22,6 @@
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from django.conf.urls.defaults import patterns, url
-from djangorestframework.views import ListOrCreateModelView, InstanceModelView
-
-from resources import ProdutoResource
 
 urlpatterns = patterns('',
-    url(r'^$', ListOrCreateModelView.as_view(resource=ProdutoResource)),
-    url(r'^(?P<pk>[^/]+)/$', InstanceModelView.as_view(resource=ProdutoResource)),
 )

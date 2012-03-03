@@ -22,12 +22,12 @@
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from django.conf.urls.defaults import patterns, include, url
+from views import *
 
 urlpatterns = patterns(
     '',
-    url(r'^$', 'hotsys.views.home', name='home'),
-    url(r'^produto/', include('hotsys.produto.urls')),
-    url(r'^hospede/', include('hotsys.hospede.urls')),
-    url(r'^funcionario/', include('hotsys.funcionario.urls')),
-    url(r'^quarto/', include('hotsys.quarto.urls')),
+    url(r'^$', ListaHospede.as_view()),
+    url(r'^add/$', AddHospede.as_view()),
+    url(r'^atualiza/(?P<pk>\d+)/$', AtualizaHospede.as_view()),
+    url(r'^remove/(?P<pk>\d+)/$', RemoveHospede.as_view()),
 )

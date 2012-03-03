@@ -21,17 +21,42 @@
 # junto com este programa, se não, escreva para a Fundação do Software
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+__all__ = ('Hospede',)
+
 from django.db import models
 
 class Hospede(models.Model):
-    nome = models.CharField(max_length=100)
-    data_nasc = models.DateField()
-    cpf = models.CharField(max_length=16)
-    telefone = models.CharField(max_length=16)
-    logradouro = models.CharField(max_length=250)
-    cidade = models.CharField(max_length=50)
-    necessidades = models.TextField(null=True, blank=True)
-    observacoes = models.TextField(null=True, blank=True)
+    nome = models.CharField(
+        max_length=100,
+        verbose_name="Nome completo")
+
+    data_nasc = models.DateField(
+        verbose_name="Data de nascimento")
+
+    cpf = models.CharField(
+        max_length=16,
+        verbose_name="CPF",
+        unique=True)
+
+    telefone = models.CharField(
+        max_length=16,
+        verbose_name="Telefone")
+
+    logradouro = models.CharField(
+        max_length=250,
+        verbose_name="Logradouro")
+    
+    cidade = models.CharField(
+        max_length=50,
+        verbose_name="Cidade")
+
+    necessidades = models.TextField(
+        null=True, blank=True,
+        verbose_name="Necessidades")
+
+    observacoes = models.TextField(
+        null=True, blank=True,
+        verbose_name=u"Observações")
     
     class Meta:
         db_table = "hospede"

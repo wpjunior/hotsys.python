@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>{% block title %}{% endblock %} - HotSys</title>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/style.css"/>
+  </head>
+  <body>
+    <div id="base">
+      <div id="header">
+        <h2>HotSys</h2>
+      </div>
+      <div id="menu"> <ul>
+          <li><a href="/produto/">Produtos</a></li>
+          <li><a href="/hospede/">Hóspedes</a></li>
+          <li><a href="/quarto/">Quartos</a></li>
+      </div>
+      
+      <div id="content">
+	{% block conteudo %}
+	{% endblock %}
+      </div>
+      <div id="footer">
+        <h2>Trabalho de conclusão de curso</h2>
+        <p>5º Periodo de Tecnologia em Análise e Desenvolvimento de Sistemas</p>
+        Alunos:
+        <ul>
+          <li>Jonathas Teodoro Peixoto</li>
+          <li>Mateus Fedrigo de Moura</li>
+          <li>Wilson Pinto Júnior</li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
