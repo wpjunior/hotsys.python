@@ -51,6 +51,7 @@ class Estadia(models.Model):
         db_table = "estadia"
 
 class Dano(models.Model):
+    estadia = models.ForeignKey("Estadia")
     desc = models.CharField(max_length=200)
     valor = models.DecimalField(decimal_places=2, max_digits=10)
     grave = models.BooleanField()
