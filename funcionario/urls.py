@@ -23,12 +23,13 @@
 
 from django.conf.urls.defaults import patterns, include, url
 from views import *
+from decorators import acesso_ao_cargo
 
 urlpatterns = patterns(
     '',
-    url(r'^$', ListaFuncionario.as_view()),
-    url(r'^add/$', AddFuncionario.as_view()),
-    url(r'^atualiza/(?P<pk>\d+)/$', AtualizaFuncionario.as_view()),
-    url(r'^remove/(?P<pk>\d+)/$', RemoveFuncionario.as_view()),
-    url(r'^senha/(?P<pk>\d+)/$', SenhaFuncionario.as_view()),
+    url(r'^$', acesso_ao_cargo(ListaFuncionario.as_view(), 'g')),
+    url(r'^add/$', acesso_ao_cargo(AddFuncionario.as_view(), 'g')),
+    url(r'^atualiza/(?P<pk>\d+)/$', acesso_ao_cargo(AtualizaFuncionario.as_view(), 'g')),
+    url(r'^remove/(?P<pk>\d+)/$', acesso_ao_cargo(RemoveFuncionario.as_view(), 'g')),
+    url(r'^senha/(?P<pk>\d+)/$', acesso_ao_cargo(SenhaFuncionario.as_view(), 'g')),
 )

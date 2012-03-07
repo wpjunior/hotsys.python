@@ -14,10 +14,11 @@
         <p>Logado como {{ user.nome }}</p>
       </div>
       <div id="menu"> <ul>
+          {% if user.tipo == 'r' %}<li><a href="/reserva/">Reservas</a></li>{% endif %}
           <li><a href="/quarto/">Quartos</a></li>
           <li><a href="/hospede/">Hóspedes</a></li>
-          <li><a href="/produto/">Produtos</a></li>
-          <li><a href="/funcionario/">Funcionários</a></li>
+          {% if user.tipo == 'g' %}<li><a href="/produto/">Produtos</a></li>{% endif %}
+          {% if user.tipo == 'g' %}<li><a href="/funcionario/">Funcionários</a></li>{% endif %}
           <li><a href="/logout/">Sair</a></li>
       </div>
       

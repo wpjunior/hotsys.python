@@ -23,11 +23,12 @@
 
 from django.conf.urls.defaults import patterns, url
 from views import *
+from hotsys.funcionario.decorators import acesso_ao_cargo
 
 urlpatterns = patterns(
     '',
-    url(r'^$', ListaProduto.as_view()),
-    url(r'^add/$', AddProduto.as_view()),
-    url(r'^atualiza/(?P<pk>\d+)/$', AtualizaProduto.as_view()),
-    url(r'^remove/(?P<pk>\d+)/$', RemoveProduto.as_view()),
+    url(r'^$', acesso_ao_cargo(ListaProduto.as_view(), 'g')),
+    url(r'^add/$', acesso_ao_cargo(AddProduto.as_view(), 'g')),
+    url(r'^atualiza/(?P<pk>\d+)/$', acesso_ao_cargo(AtualizaProduto.as_view(), 'g')),
+    url(r'^remove/(?P<pk>\d+)/$', acesso_ao_cargo(RemoveProduto.as_view(), 'g')),
 )
