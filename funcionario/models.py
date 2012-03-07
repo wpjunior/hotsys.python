@@ -49,10 +49,12 @@ class Funcionario(models.Model):
 
     senha = models.CharField(max_length=40)
 
-    ativo = models.BooleanField()
+    ativo = models.BooleanField(
+        default=True)
     cpf = models.CharField(
         max_length=16,
-        verbose_name="CPF")
+        verbose_name="CPF",
+        null=True, blank=True)
 
     def set_senha(self, senha):
         """

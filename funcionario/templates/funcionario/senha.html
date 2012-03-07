@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Alteração de senha de funcionário{% endblock %}
+{% block conteudo %}
+<h3>Alterar senha do funcionário</h3>
+
+<form method="post" action=".">
+  {% csrf_token %}
+
+  <table>
+    {{ form.as_table }}
+  </table>
+
+  <input type="submit" value="Alterar" />
+</form>
+{% endblock %}
