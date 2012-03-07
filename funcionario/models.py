@@ -21,6 +21,7 @@
 # junto com este programa, se não, escreva para a Fundação do Software
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import hashlib
 from django.db import models
 
 FUNCIONARIO_TIPO = (
@@ -43,7 +44,8 @@ class Funcionario(models.Model):
 
     usuario = models.CharField(
         max_length=50,
-        verbose_name="Usuário")
+        verbose_name="Usuário",
+        unique=True)
 
     senha = models.CharField(max_length=40)
 
@@ -51,6 +53,12 @@ class Funcionario(models.Model):
     cpf = models.CharField(
         max_length=16,
         verbose_name="CPF")
+
+    def set_senha(self, senha):
+        """
+        Guarda a senha no formado MD5SUM
+        """
+        self.senha = hashlib.md5(senha).hexdigest()
 
     class Meta:
         db_table = "funcionario"

@@ -30,4 +30,5 @@ urlpatterns = patterns(
     url(r'^add/$', AddFuncionario.as_view()),
     url(r'^atualiza/(?P<pk>\d+)/$', AtualizaFuncionario.as_view()),
     url(r'^remove/(?P<pk>\d+)/$', RemoveFuncionario.as_view()),
+    url(r'^senha/(?P<pk>\d+)/$', SenhaFuncionario.as_view()),
 )

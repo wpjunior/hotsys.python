@@ -22,21 +22,26 @@
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 __all__ = ('AddFuncionario', 'ListaFuncionario',
-           'AtualizaFuncionario', 'RemoveFuncionario')
+           'AtualizaFuncionario', 'RemoveFuncionario',
+           'SenhaFuncionario')
 
 from models import *
 from forms import *
-from django.views.generic import DeleteView, CreateView, UpdateView, ListView
+from django.views.generic import (
+    DeleteView, CreateView,
+    UpdateView, ListView, FormView)
+
+from django.shortcuts import get_object_or_404
 
 class AddFuncionario(CreateView):
     model = Funcionario
     success_url = "/funcionario/"
-    form_class = FuncionarioForm
+    form_class = AddFuncionarioForm
 
 class AtualizaFuncionario(UpdateView):
     model = Funcionario
     success_url = "/funcionario/"
-    form_class = FuncionarioForm
+    form_class = AtualizaFuncionarioForm
 
 class RemoveFuncionario(DeleteView):
     model = Funcionario
@@ -45,3 +50,25 @@ class RemoveFuncionario(DeleteView):
 class ListaFuncionario(ListView):
     model = Funcionario
     paginate_by = 20
+    template_name = "funcionario/funcionario_list.html"
+
+class SenhaFuncionario(FormView):
+    success_url = "/funcionario/"
+    template_name = "funcionario/senha.html"
+
+    def get_object(self):
+        return get_object_or_404(Funcionario, id=self.kwargs.get('pk'))
+
+    def get_form(self, *args, **kwargs):
+        return SenhaFuncionarioForm(self.get_object())
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        form = SenhaFuncionarioForm(self.object, request.POST)
+        
+        if form.is_valid():
+            form.save()
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
