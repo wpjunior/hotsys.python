@@ -28,15 +28,15 @@ from django.views.generic import DeleteView, CreateView, UpdateView, ListView
 
 class AddHospede(CreateView):
     model = Hospede
-    success_url = "/hospede/"
+    success_url = "/quarto/"
 
 class AtualizaHospede(UpdateView):
     model = Hospede
-    success_url = "/hospede/"
+    success_url = "/quarto/"
 
 class RemoveHospede(DeleteView):
     model = Hospede
-    success_url = "/hospede/"
+    success_url = "/quarto/"
 
 class ListaHospede(ListView):
     model = Hospede

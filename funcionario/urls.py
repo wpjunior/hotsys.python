@@ -21,26 +21,13 @@
 # junto com este programa, se não, escreva para a Fundação do Software
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-__all__ = ('AddProduto', 'ListaProduto', 'AtualizaProduto', 'RemoveProduto')
+from django.conf.urls.defaults import patterns, include, url
+from views import *
 
-from models import *
-from forms import *
-from django.views.generic import DeleteView, CreateView, UpdateView, ListView
-
-class AddProduto(CreateView):
-    model = Produto
-    success_url = "/produto/"
-    form_class = ProdutoForm
-
-class AtualizaProduto(UpdateView):
-    model = Produto
-    success_url = "/produto/"
-    form_class = ProdutoForm
-
-class RemoveProduto(DeleteView):
-    model = Produto
-    success_url = "/produto/"
-
-class ListaProduto(ListView):
-    model = Produto
-    paginate_by = 20
+urlpatterns = patterns(
+    '',
+    url(r'^$', ListaFuncionario.as_view()),
+    url(r'^add/$', AddFuncionario.as_view()),
+    url(r'^atualiza/(?P<pk>\d+)/$', AtualizaFuncionario.as_view()),
+    url(r'^remove/(?P<pk>\d+)/$', RemoveFuncionario.as_view()),
+)

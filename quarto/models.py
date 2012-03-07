@@ -22,6 +22,7 @@
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from django.db import models
+from hospede.models import Hospede
 
 QUARTO_ESTADOS = (
     ('l', "Livre"),
@@ -30,15 +31,22 @@ QUARTO_ESTADOS = (
     ('m', u"Manutenção"))
 
 class Quarto(models.Model):
-    nome = models.CharField(max_length=150)
-    preco = models.DecimalField(decimal_places=2, max_digits=10)
+    nome = models.CharField(max_length=150,
+                            verbose_name="Nome")
+    preco = models.DecimalField(decimal_places=2, max_digits=10,
+                                verbose_name="Preço")
     
-    num_leitos = models.IntegerField()
-    suite = models.BooleanField()
-    cama_casal = models.BooleanField()
+    num_leitos = models.IntegerField(
+        verbose_name=u"Número de leitos")
+    suite = models.BooleanField(
+        verbose_name="é suite")
+    cama_casal = models.BooleanField(
+        verbose_name="Possui cama de casal")
     estado = models.CharField(max_length=1,
-                              choices=QUARTO_ESTADOS)
-    estadia_atual = models.ForeignKey("Estadia")
+                              choices=QUARTO_ESTADOS,
+                              default='l')
+    estadia_atual = models.ForeignKey("Estadia",
+                                      blank=True, null=True)
 
     class Meta:
         db_table = "quarto"
@@ -46,7 +54,8 @@ class Quarto(models.Model):
 class Estadia(models.Model):
     data_inicial = models.DateTimeField()
     data_final = models.DateTimeField(blank=True, null=True)
-    #TODO: add hospedes
+    hospedes = models.ManyToManyField(Hospede)
+
     class Meta:
         db_table = "estadia"
 

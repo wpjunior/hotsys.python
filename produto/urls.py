@@ -22,6 +22,12 @@
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from django.conf.urls.defaults import patterns, url
+from views import *
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
+    url(r'^$', ListaProduto.as_view()),
+    url(r'^add/$', AddProduto.as_view()),
+    url(r'^atualiza/(?P<pk>\d+)/$', AtualizaProduto.as_view()),
+    url(r'^remove/(?P<pk>\d+)/$', RemoveProduto.as_view()),
 )

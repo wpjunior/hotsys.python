@@ -29,15 +29,28 @@ FUNCIONARIO_TIPO = (
     ('r', "Recepcionista"))
 
 class Funcionario(models.Model):
-    nome = models.CharField(max_length=100)
-    email = models.EmailField()
-    tipo = models.CharField(max_length=1,
-                            choices=FUNCIONARIO_TIPO)
+    nome = models.CharField(
+        max_length=100,
+        verbose_name="Nome")
 
-    usuario = models.CharField(max_length=50)
+    email = models.EmailField(
+        verbose_name="E-Mail")
+
+    tipo = models.CharField(
+        max_length=1,
+        choices=FUNCIONARIO_TIPO,
+        verbose_name="Tipo")
+
+    usuario = models.CharField(
+        max_length=50,
+        verbose_name="Usuário")
+
     senha = models.CharField(max_length=40)
+
     ativo = models.BooleanField()
-    cpf = models.CharField(max_length=16)
+    cpf = models.CharField(
+        max_length=16,
+        verbose_name="CPF")
 
     class Meta:
         db_table = "funcionario"

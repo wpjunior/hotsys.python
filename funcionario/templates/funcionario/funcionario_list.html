@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Funcionários{% endblock %}
+{% block conteudo %}
+<a href="add/">Adicionar novo funcionário</a>
+
+{% if object_list %}
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th><th>E-Mail</th>
+      <th>Tipo</th>
+      <th>Usuário</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for object in object_list %}
+    <tr>
+      <td>{{ object.nome }}</td>
+      <td>{{ object.email }}</td>
+      <td>{{ object.get_tipo_display }}</td>
+      <td>{{ object.usuario }}</td>
+      <td>
+        <a href="atualiza/{{ object.id }}">Editar</a>|
+        <a href="remove/{{ object.id }}">Deletar</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if is_paginated %}
+<div class="pagination">
+  <span class="page-links">
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+    {% endif %}
+    <span class="page-current">
+      Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+    </span>
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">Próxima</a>
+    {% endif %}
+  </span>
+</div>
+{% endif %}
+
+{% else %}
+<h3>Nenhum funcionario cadastrado</h3>
+{% endif %}
+{% endblock %}

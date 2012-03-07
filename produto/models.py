@@ -34,9 +34,17 @@ class Produto(models.Model):
     valor: valor de venda do produto
     qtde: quantidade em estoque
     """
-    nome = models.CharField(max_length=20)
-    valor = models.DecimalField(decimal_places=2, max_digits=10)
-    qtde = models.IntegerField(null=True, blank=True)
+    nome = models.CharField(
+        max_length=20,
+        verbose_name="Nome")
+
+    valor = models.DecimalField(
+        decimal_places=2, max_digits=10,
+        verbose_name="Valor")
+
+    qtde = models.IntegerField(
+        null=True, blank=True,
+        verbose_name="Quantidade")
     
     class Meta:
         db_table = "produto"

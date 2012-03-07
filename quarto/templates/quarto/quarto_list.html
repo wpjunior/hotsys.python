@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Quartos{% endblock %}
+{% block conteudo %}
+<a href="add/">Adicionar novo quarto</a>
+
+{% if object_list %}
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th><th>Estado</th>
+      <th>Preço</th><th>Estadia Atual</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for object in object_list %}
+    <tr>
+      <td>{{ object.nome }}</td>
+      <td>{{ object.get_estado_display }}</td>
+      <td>{{ object.preco|floatformat:2 }}</td>
+      <td>{% if object.estadia_atual %}-{% endif %}</td>
+      <td>
+        <a href="atualiza/{{ object.id }}">Editar</a>|
+        <a href="remove/{{ object.id }}">Deletar</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if is_paginated %}
+<div class="pagination">
+  <span class="page-links">
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+    {% endif %}
+    <span class="page-current">
+      Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+    </span>
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">Próxima</a>
+    {% endif %}
+  </span>
+</div>
+{% endif %}
+
+{% else %}
+<h3>Nenhum quarto cadastrado</h3>
+{% endif %}
+{% endblock %}

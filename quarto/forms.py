@@ -21,26 +21,12 @@
 # junto com este programa, se não, escreva para a Fundação do Software
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-__all__ = ('AddProduto', 'ListaProduto', 'AtualizaProduto', 'RemoveProduto')
+__all__ = ("QuartoForm",)
 
+from django.forms import ModelForm
 from models import *
-from forms import *
-from django.views.generic import DeleteView, CreateView, UpdateView, ListView
 
-class AddProduto(CreateView):
-    model = Produto
-    success_url = "/produto/"
-    form_class = ProdutoForm
-
-class AtualizaProduto(UpdateView):
-    model = Produto
-    success_url = "/produto/"
-    form_class = ProdutoForm
-
-class RemoveProduto(DeleteView):
-    model = Produto
-    success_url = "/produto/"
-
-class ListaProduto(ListView):
-    model = Produto
-    paginate_by = 20
+class QuartoForm(ModelForm):
+    class Meta:
+        model = Quarto
+        exclude = ('estadia_atual', 'estado')

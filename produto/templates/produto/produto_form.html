@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}{% if object %}Atualizando{% else %}Criando{% endif %} Produto{% endblock %}
+{% block conteudo %}
+<h3>
+  {% if object %}Atualizando{% else %}Criando{% endif %} Produto
+</h3>
+
+<form method="post" action=".">
+  {% csrf_token %}
+
+  <table>
+    {{ form.as_table }}
+  </table>
+
+  <input type="submit" value="{% if object %}Atualizar{% else %}Criar{% endif %}" />
+</form>
+{% endblock %}
