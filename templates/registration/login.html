@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.ico" type="image/x-icon" />
+    <title>Login - HotSys</title>
+
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/login.css">
+  </head>
+  <body>
+    <div class="logincontainer">
+      <h1>HotSys - Login</h1>
+      <div class="loginbox">
+	<form id="form" method="post" enctype="multipart/form-data" action=".">
+          {% csrf_token %}
+          {% if form.errors %}
+          <div class="message errormsg"  style="width: 240px;">
+            <p>Oops!  Seu Usuário ou Senha não estão corretos.</p>
+          </div>
+          {% endif %}
+
+	  <div class="inputcontainer">
+	    <label for="id_username">Usuário:</label>
+	    <input type="text" id="id_username" class="wsmall required" name="username">
+	  </div>
+	  <div class="inputcontainer">
+	    <label for="id_password">Senha:</label>
+	    <input type="password" id="id_password" class="wnormall required" name="password">
+	  </div>
+	  <input type="submit" value="Login" class="loginsubmit">
+	</form>
+      </div>
+    </div>
+  </body>
+</html>

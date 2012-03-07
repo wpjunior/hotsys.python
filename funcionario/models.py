@@ -62,5 +62,14 @@ class Funcionario(models.Model):
         """
         self.senha = hashlib.md5(senha).hexdigest()
 
+    def check_senha(self, senha):
+        senha = hashlib.md5(senha).hexdigest()
+
+        return self.senha == senha
+
+    @property
+    def is_active(self):
+        return self.ativo
+
     class Meta:
         db_table = "funcionario"

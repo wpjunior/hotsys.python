@@ -21,15 +21,34 @@
 # junto com este programa, se não, escreva para a Fundação do Software
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from django.conf.urls.defaults import patterns, include, url
+from django.core.validators import email_re
+from models import Funcionario
 
-urlpatterns = patterns(
-    '',
-    url(r'^$', 'hotsys.views.home', name='home'),
-    url(r'^produto/', include('hotsys.produto.urls')),
-    url(r'^hospede/', include('hotsys.hospede.urls')),
-    url(r'^funcionario/', include('hotsys.funcionario.urls')),
-    url(r'^quarto/', include('hotsys.quarto.urls')),
-    url(r'^login/$', 'django.contrib.auth.views.login'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout_then_login'),
-)
+class LoginBackend(object):
+    supports_object_permissions = False
+    supports_anonymous_user = False
+    supports_inactive_user = False
+
+    def authenticate(self, username=None, password=None):
+        # verifica se e um email
+        if email_re.match(username):
+            try:
+                user = Funcionario.objects.get(email=username)
+            except Funcionario.DoesNotExist:
+                return None
+
+        # caso nao autentica no modo padrao
+        else:
+            try:
+                user = Funcionario.objects.get(usuario=username)
+            except Funcionario.DoesNotExist:
+                return None
+
+        if user:
+            if password and user.check_senha(password):
+                return user
+
+        return None
+
+    def get_user(self, user_id):
+        return Funcionario.objects.get(id=user_id)
