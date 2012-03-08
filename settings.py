@@ -92,6 +92,7 @@ INSTALLED_APPS = (
     'hotsys.quarto',
     'hotsys.hospede',
     'hotsys.funcionario',
+    'hotsys.reserva',
 )
 
 LOGGING = {

@@ -22,17 +22,14 @@
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from django.conf.urls.defaults import patterns, include, url
-from django.contrib.auth.decorators import login_required
-from views import IndexView
+from views import *
 
 urlpatterns = patterns(
     '',
-    url(r'^$', login_required(IndexView.as_view())),
-    url(r'^reserva/', include('hotsys.reserva.urls')),
-    url(r'^produto/', include('hotsys.produto.urls')),
-    url(r'^hospede/', include('hotsys.hospede.urls')),
-    url(r'^funcionario/', include('hotsys.funcionario.urls')),
-    url(r'^quarto/', include('hotsys.quarto.urls')),
-    url(r'^login/$', 'django.contrib.auth.views.login'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout_then_login'),
+    url(r'^$', ListaReserva.as_view()),
+    url(r'^add/$', AddReserva.as_view()),
+    url(r'^hospedar/(?P<pk>\d+)/$', HospedarReserva.as_view()),
+    url(r'^confirma/(?P<pk>\d+)/$', AtualizaReserva.as_view()),
+    url(r'^atualiza/(?P<pk>\d+)/$', AtualizaReserva.as_view()),
+    url(r'^remove/(?P<pk>\d+)/$', RemoveReserva.as_view()),
 )

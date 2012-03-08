@@ -22,6 +22,7 @@
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from django.shortcuts import render
+from django.views.generic.base import TemplateView
 
-def home(request):
-    return render(request, 'index.html')
+class IndexView(TemplateView):
+    template_name = 'index.html'

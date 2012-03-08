@@ -21,18 +21,18 @@
 # junto com este programa, se não, escreva para a Fundação do Software
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from django.conf.urls.defaults import patterns, include, url
-from django.contrib.auth.decorators import login_required
-from views import IndexView
+from django.db import models
+from hotsys.quarto.models import Quarto
 
-urlpatterns = patterns(
-    '',
-    url(r'^$', login_required(IndexView.as_view())),
-    url(r'^reserva/', include('hotsys.reserva.urls')),
-    url(r'^produto/', include('hotsys.produto.urls')),
-    url(r'^hospede/', include('hotsys.hospede.urls')),
-    url(r'^funcionario/', include('hotsys.funcionario.urls')),
-    url(r'^quarto/', include('hotsys.quarto.urls')),
-    url(r'^login/$', 'django.contrib.auth.views.login'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout_then_login'),
-)
+class Reserva(models.Model):
+    reservante = models.CharField(max_length=100)
+    telefone = models.CharField(max_length=20)
+    
+    data_inicial = models.DateTimeField()
+    data_final = models.DateTimeField(blank=True, null=True)
+
+    confirmada = models.BooleanField()
+    quartos = models.ManyToManyField(Quarto)
+
+    class Meta:
+        db_table = "reserva"

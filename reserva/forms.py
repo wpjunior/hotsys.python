@@ -21,18 +21,12 @@
 # junto com este programa, se não, escreva para a Fundação do Software
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from django.conf.urls.defaults import patterns, include, url
-from django.contrib.auth.decorators import login_required
-from views import IndexView
+__all__ = ("ReservaForm",)
 
-urlpatterns = patterns(
-    '',
-    url(r'^$', login_required(IndexView.as_view())),
-    url(r'^reserva/', include('hotsys.reserva.urls')),
-    url(r'^produto/', include('hotsys.produto.urls')),
-    url(r'^hospede/', include('hotsys.hospede.urls')),
-    url(r'^funcionario/', include('hotsys.funcionario.urls')),
-    url(r'^quarto/', include('hotsys.quarto.urls')),
-    url(r'^login/$', 'django.contrib.auth.views.login'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout_then_login'),
-)
+from django.forms import ModelForm
+from models import *
+
+class ReservaForm(ModelForm):
+    class Meta:
+        model = Reserva
+        exclude = ('quartos', 'confirmada')

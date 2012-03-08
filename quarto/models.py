@@ -67,16 +67,3 @@ class Dano(models.Model):
 
     class Meta:
         db_table = "dano"
-
-class Reserva(models.Model):
-    reservante = models.CharField(max_length=100)
-    telefone = models.CharField(max_length=20)
-    
-    data_inicial = models.DateTimeField()
-    data_final = models.DateTimeField(blank=True, null=True)
-
-    confirmada = models.BooleanField()
-    quartos = models.ManyToManyField(Quarto)
-
-    class Meta:
-        db_table = "reserva"

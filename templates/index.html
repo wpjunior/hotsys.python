@@ -1,16 +1,14 @@
-<html>
-  <head>
-    <title>HotSys</title>
-    <script src="/static/js/jquery-min.js"></script>   
-  </head>
-  <body>
-    <div id="content">
-      <div id="menu">
-        <a href="/produto/">Produtos</a>
-        <a href="/hospede/">Hóspedes</a>
-        <a href="/quarto/">Quartos</a>
-      </div>
-      <div id="container"></div>
-    </div>
-  </body>
-</html>
+{% extends "base.html" %}
+{% block title %}HotSys{% endblock %}
+{% block conteudo %}
+<h1>Bem vindo ao HotSys</h1>
+<h2>Trabalho de conclusão de curso</h2>
+        <p>5º Periodo de Tecnologia em Análise e Desenvolvimento de Sistemas</p>
+        Alunos:
+        <ul>
+          <li>Jonathas Teodoro Peixoto</li>
+          <li>Mateus Fedrigo de Moura</li>
+          <li>Wilson Pinto Júnior</li>
+        </ul>
+{% endblock %}
+        

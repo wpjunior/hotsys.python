@@ -71,5 +71,8 @@ class Funcionario(models.Model):
     def is_active(self):
         return self.ativo
 
+    def is_authenticated(self):
+        return True
+
     class Meta:
         db_table = "funcionario"

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Reservas{% endblock %}
+{% block conteudo %}
+<a href="add/">Adicionar nova reserva</a>
+
+{% if object_list %}
+<table>
+  <thead>
+    <tr>
+      <th>Reservante</th><th>Telefone</th>
+      <th>Data inicial</th><th>Data final</th>
+      <th>Confirmada</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for object in object_list %}
+    <tr>
+      <td>{{ object.reservante }}</td>
+      <td>{{ object.telefone }}</td>
+      <td>{{ object.data_inicial|date:"d/m/Y" }}</td>
+      <td>{% if object.data_inicial %}{{ object.data_final|date:"d/m/Y" }}{% else %}-{% endif %}</td>
+      <td>{% if object.confirmada %}Sim{% else %}Não{% endif %}</td>
+      <td>
+        <a href="confirmar/{{ object.id }}">Confirmar</a>|
+        <a href="cancelar/{{ object.id }}">Cancelar</a>|
+        {% if object.confirmada %}
+        <a href="hospedar/{{ object.id }}">Iniciar estadia</a>
+        {% endif %}
+        <a href="atualiza/{{ object.id }}">Editar</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if is_paginated %}
+<div class="pagination">
+  <span class="page-links">
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+    {% endif %}
+    <span class="page-current">
+      Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+    </span>
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">Próxima</a>
+    {% endif %}
+  </span>
+</div>
+{% endif %}
+
+{% else %}
+<h3>Nenhuma reserva cadastrada</h3>
+{% endif %}
+{% endblock %}
