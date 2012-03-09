@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block title %}Quartos{% endblock %}
 {% block conteudo %}
-<a href="add/">Adicionar novo quarto</a>
+<a class="button green" href="add/">Adicionar</a>
 
 {% if object_list %}
-<table>
+<table class="list">
   <thead>
     <tr>
       <th>Nome</th><th>Estado</th>
@@ -20,8 +20,8 @@
       <td>{{ object.preco|floatformat:2 }}</td>
       <td>{% if object.estadia_atual %}-{% endif %}</td>
       <td>
-        <a href="atualiza/{{ object.id }}">Editar</a>|
-        <a href="remove/{{ object.id }}">Deletar</a>
+        <a class="button" href="atualiza/{{ object.id }}">Editar</a>
+        <a class="button red" href="remove/{{ object.id }}">Deletar</a>
       </td>
     </tr>
     {% endfor %}

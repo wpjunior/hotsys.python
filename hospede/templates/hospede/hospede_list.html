@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block title %}Hóspedes{% endblock %}
 {% block conteudo %}
-<a href="add/">Adicionar novo hóspede</a>
+<a class="button green" href="add/">Adicionar</a>
 
 {% if object_list %}
-<table>
+<table class="list">
   <thead>
     <tr>
       <th>Nome</th><th>CPF</th>
@@ -18,8 +18,8 @@
       <td>{{ object.cpf }}</td>
       <td>{{ object.telefone }}</td>
       <td>
-        <a href="atualiza/{{ object.id }}">Editar</a>|
-        <a href="remove/{{ object.id }}">Deletar</a>
+        <a href="atualiza/{{ object.id }}" class="button">Editar</a>
+        <a href="remove/{{ object.id }}" class="button red">Deletar</a>
       </td>
     </tr>
     {% endfor %}

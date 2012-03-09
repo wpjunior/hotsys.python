@@ -11,7 +11,7 @@
   <table>
     {{ form.as_table }}
   </table>
-
-  <input type="submit" value="{% if object %}Atualizar{% else %}Criar{% endif %}" />
+  <input type="button" value="Voltar" onclick="history.go(-1)">
+  <input class="green button" type="submit" value="{% if object %}Atualizar{% else %}Criar{% endif %}" />
 </form>
 {% endblock %}

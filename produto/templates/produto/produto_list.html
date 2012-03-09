@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block title %}Produtos{% endblock %}
 {% block conteudo %}
-<a href="add/">Adicionar novo produto</a>
+<a class="button green" href="add/">Adicionar</a>
 
 {% if object_list %}
-<table>
+<table class="list">
   <thead>
     <tr>
       <th>Nome</th>
@@ -20,8 +20,8 @@
       <td>{{ object.valor|floatformat:2 }}</td>
       <td>{{ object.qtde }}</td>
       <td>
-        <a href="atualiza/{{ object.id }}">Editar</a>|
-        <a href="remove/{{ object.id }}">Deletar</a>
+        <a href="atualiza/{{ object.id }}" class="button">Editar</a>
+        <a href="remove/{{ object.id }}" class="button red">Deletar</a>
       </td>
     </tr>
     {% endfor %}
