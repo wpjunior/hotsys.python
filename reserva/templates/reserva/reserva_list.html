@@ -22,11 +22,12 @@
       <td>{% if object.data_inicial %}{{ object.data_final|date:"d/m/Y" }}{% else %}-{% endif %}</td>
       <td>{% if object.confirmada %}Sim{% else %}Não{% endif %}</td>
       <td>
-        <a href="confirmar/{{ object.id }}">Confirmar</a>|
-        <a href="cancelar/{{ object.id }}">Cancelar</a>|
         {% if object.confirmada %}
         <a href="hospedar/{{ object.id }}">Iniciar estadia</a>
+        {% else %}
+        <a href="confirmar/{{ object.id }}">Confirmar</a>|
         {% endif %}
+        <a href="cancelar/{{ object.id }}">Cancelar</a>|
         <a href="atualiza/{{ object.id }}">Editar</a>
       </td>
     </tr>

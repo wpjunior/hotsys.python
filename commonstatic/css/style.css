@@ -77,3 +77,32 @@ div#menu {
   background: none;
   color: #048;
 }
+
+#content {padding: 10px;}
+
+.errorlist {margin:0px; padding: 0px; list-style: none; color: red;}
+
+form table th {text-align: right; width: 100px; padding-right: 10px;}
+form textarea {margin-left: 10px;}
+form table td {
+    font-family: Verdana, 'Helvetica Neue', Helvetica, Arial, Geneva, sans-serif;
+    font-size: 13px;
+    padding: 2px;
+}
+form input[type='text'],form input[type='password'], form textarea {
+    display: block; margin: 4px 0 0 0;
+    border: 1px solid #ccc;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .15) inset;
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .15) inset; box-shadow:
+    -0 1px 2px rgba(0, 0, 0, .15) inset;
+    color: #424242;
+    font-family: Verdana, 'Helvetica Neue', Helvetica, Arial, Geneva, sans-serif;
+    font-size: 13px;
+    outline: none;
+    padding: 6px;
+    -moz-transition: border .3s linear, box-shadow .3s linear;
+    -webkit-transition: border .3s linear, -webkit-box-shadow .3s linear;
+}

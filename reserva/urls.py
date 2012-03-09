@@ -29,7 +29,7 @@ urlpatterns = patterns(
     url(r'^$', ListaReserva.as_view()),
     url(r'^add/$', AddReserva.as_view()),
     url(r'^hospedar/(?P<pk>\d+)/$', HospedarReserva.as_view()),
-    url(r'^confirma/(?P<pk>\d+)/$', AtualizaReserva.as_view()),
+    url(r'^confirmar/(?P<pk>\d+)/$', ConfirmarReserva.as_view()),
     url(r'^atualiza/(?P<pk>\d+)/$', AtualizaReserva.as_view()),
-    url(r'^remove/(?P<pk>\d+)/$', RemoveReserva.as_view()),
+    url(r'^cancelar/(?P<pk>\d+)/$', CancelarReserva.as_view()),
 )

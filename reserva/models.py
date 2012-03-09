@@ -34,5 +34,15 @@ class Reserva(models.Model):
     confirmada = models.BooleanField()
     quartos = models.ManyToManyField(Quarto)
 
+    pago = models.DecimalField(decimal_places=2, max_digits=10,
+                               verbose_name="Valor pré-pago",
+                               blank=True, null=True)
+
     class Meta:
         db_table = "reserva"
+
+    def confirmar(self, valor):
+        self.confirmada = True
+        self.pago = valor
+
+        self.save()

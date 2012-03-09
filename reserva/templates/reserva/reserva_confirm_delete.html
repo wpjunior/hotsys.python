@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Apagar Hospede{% endblock %}
+{% block conteudo %}
+<form action="." method="post">
+  {% csrf_token %}
+  <h3>Deseja cancelar a reserva ?</h3>
+  <input type="submit" value="Sim">
+</form>
+{% endblock %}

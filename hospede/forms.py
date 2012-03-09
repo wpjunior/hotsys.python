@@ -21,16 +21,18 @@
 # junto com este programa, se não, escreva para a Fundação do Software
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-__all__ = ("ReservaForm", 'ConfirmarReservaForm')
+__all__ = ('HospedeForm',)
 
-from django import forms
 from models import *
+from django import forms
 
-class ReservaForm(forms.ModelForm):
+class HospedeForm(forms.ModelForm):
+    data_nasc = forms.DateField(
+        label="Data de nascimento",
+        required=True,
+        widget=forms.DateInput(
+            format="%d/%m/%Y",
+            attrs={'size':'15','class': 'date'}))
+
     class Meta:
-        model = Reserva
-        exclude = ('quartos', 'confirmada', 'pago')
-
-class ConfirmarReservaForm(forms.Form):
-    valor = forms.DecimalField(
-        label="Valor pré-pago")
+        model = Hospede

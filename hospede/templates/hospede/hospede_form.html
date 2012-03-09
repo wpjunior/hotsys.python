@@ -1,5 +1,18 @@
 {% extends "base.html" %}
 {% block title %}{% if object %}Atualizando{% else %}Criando{% endif %} Hospede{% endblock %}
+{% block extrahead %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.maskedinput-1.3.js"></script>
+<script type="text/javascript">
+  $(function(e) {
+     $('#id_cpf').mask('999.999.999-99');
+     $('#id_data_nasc').mask('99/99/9999');
+     $('#id_telefone').mask('(99) 9999-9999');
+  });
+</script>
+<style type="text/css">
+  #id_necessidades, #id_observacoes {height: 50px; width: 500px;}
+</style>
+{% endblock %}
 {% block conteudo %}
 <h3>
   {% if object %}Atualizando{% else %}Criando{% endif %} Hospede
@@ -9,8 +22,64 @@
   {% csrf_token %}
 
   <table>
-    {{ form.as_table }}
+    <tbody>
+      <tr>
+        <th>{{ form.cpf.label }}:</th>
+        <td>{{ form.cpf }}</td>
+        {% if form.cpf.errors %}
+        <td class="errors">{{ form.cpf.errors }}</td>
+        {% endif %}
+      </tr><tr>
+        <th>{{ form.nome.label }}:</th>
+        <td>{{ form.nome }}</td>
+        {% if form.nome.errors %}
+        <td class="errors">{{ form.nome.errors }}</td>
+        {% endif %}
+      </tr><tr>
+        <th>{{ form.data_nasc.label }}:</th>
+        <td>{{ form.data_nasc }}</td>
+        {% if form.data_nasc.errors %}
+        <td class="errors">{{ form.data_nasc.errors }}</td>
+        {% endif %}
+      </tr><tr>
+        <th>{{ form.telefone.label }}:</th>
+        <td>{{ form.telefone }}</td>
+        {% if form.telefone.errors %}
+        <td class="errors">{{ form.telefone.errors }}</td>
+        {% endif %}
+      </tr>
+    </tbody>
   </table>
+  <h4>Endereço</h4>
+  <table>
+    <tbody>
+      <tr>
+        <th>{{ form.logradouro.label }}:</th>
+        <td>{{ form.logradouro }}</td>
+        {% if form.logradouro.errors %}
+        <td class="errors">{{ form.logradouro.errors }}</td>
+        {% endif %}
+      </tr><tr>
+        <th>{{ form.cidade.label }}:</th>
+        <td>{{ form.cidade }}</td>
+        {% if form.cidade.errors %}
+        <td class="errors">{{ form.cidade.errors }}</td>
+        {% endif %}
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>{{ form.necessidades.label }}</h4>
+  {% if form.necessidades.errors %}
+  <p class="errors">{{ form.necessidades.errors }}</p>
+  {% endif %}
+  {{ form.necessidades }}
+
+  <h4>{{ form.observacoes.label }}</h4>
+  {% if form.observacoes.errors %}
+  <p class="errors">{{ form.observacoes.errors }}</p>
+  {% endif %}
+  {{ form.observacoes }}
 
   <input type="submit" value="{% if object %}Atualizar{% else %}Criar{% endif %}" />
 </form>

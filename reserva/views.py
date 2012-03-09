@@ -22,11 +22,15 @@
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 __all__ = ('ListaReserva', 'AddReserva', 'HospedarReserva',
-           'AtualizaReserva', 'RemoveReserva')
+           'AtualizaReserva', 'CancelarReserva', 'ConfirmarReserva')
 
 from models import *
 from forms import *
-from django.views.generic import DeleteView, CreateView, UpdateView, ListView
+
+from django.shortcuts import get_object_or_404, redirect
+from django.views.generic import (
+    DeleteView, CreateView, UpdateView, ListView,
+    FormView)
 
 class ListaReserva(ListView):
     model = Reserva
@@ -47,6 +51,24 @@ class AtualizaReserva(UpdateView):
     success_url = "/reserva/"
     form_class = ReservaForm
 
-class RemoveReserva(DeleteView):
+class ConfirmarReserva(FormView):
+    form_class = ConfirmarReservaForm
+    template_name = "reserva/confirmar.html"
+    success_url  = "/reserva/"
+
+    def get_reserva(self):
+        return get_object_or_404(
+            Reserva,
+            id=self.kwargs['pk'])
+
+    def form_valid(self, form):
+        reserva = self.get_reserva()
+        valor = float(form.cleaned_data['valor'])
+
+        reserva.confirmar(valor)
+
+        return redirect(self.success_url)
+
+class CancelarReserva(DeleteView):
     model = Reserva
     success_url = "/reserva/"

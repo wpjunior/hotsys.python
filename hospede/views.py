@@ -24,19 +24,22 @@
 __all__ = ('AddHospede', 'ListaHospede', 'AtualizaHospede', 'RemoveHospede')
 
 from models import *
+from forms import *
 from django.views.generic import DeleteView, CreateView, UpdateView, ListView
 
 class AddHospede(CreateView):
     model = Hospede
-    success_url = "/quarto/"
+    form_class = HospedeForm
+    success_url = "/hospede/"
 
 class AtualizaHospede(UpdateView):
     model = Hospede
-    success_url = "/quarto/"
+    form_class = HospedeForm
+    success_url = "/hospede/"
 
 class RemoveHospede(DeleteView):
     model = Hospede
-    success_url = "/quarto/"
+    success_url = "/hospede/"
 
 class ListaHospede(ListView):
     model = Hospede
