@@ -30,11 +30,21 @@ QUARTO_ESTADOS = (
     ('r', "Reservado"),
     ('m', u"Manutenção"))
 
+
+class QuartoManager(models.Manager):
+    def livres(self, data_inicial, data_final):
+        return self.raw("""select qrt.* from quarto qrt, reserva rsv
+                           where qrt.id = rsv.quarto_id
+""");
+
 class Quarto(models.Model):
-    nome = models.CharField(max_length=150,
-                            verbose_name="Nome")
-    preco = models.DecimalField(decimal_places=2, max_digits=10,
-                                verbose_name="Preço")
+    nome = models.CharField(
+        max_length=150,
+        verbose_name="Nome")
+
+    preco = models.DecimalField(
+        decimal_places=2, max_digits=10,
+        verbose_name="Preço")
     
     num_leitos = models.IntegerField(
         verbose_name=u"Número de leitos")
@@ -45,16 +55,24 @@ class Quarto(models.Model):
     estado = models.CharField(max_length=1,
                               choices=QUARTO_ESTADOS,
                               default='l')
-    estadia_atual = models.ForeignKey("Estadia",
-                                      blank=True, null=True)
+
+    estadia_atual = models.ForeignKey(
+        "Estadia",
+        blank=True, null=True,
+        related_name="estadia atual")
+
+    objects = QuartoManager()
 
     class Meta:
         db_table = "quarto"
+        ordering = ['nome']
 
 class Estadia(models.Model):
     data_inicial = models.DateTimeField()
     data_final = models.DateTimeField(blank=True, null=True)
     hospedes = models.ManyToManyField(Hospede)
+    quarto = models.ForeignKey(Quarto,
+                               related_name="quarto utilizada")
 
     class Meta:
         db_table = "estadia"

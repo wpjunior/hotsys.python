@@ -27,7 +27,7 @@ from django.db import models
 
 class Hospede(models.Model):
     nome = models.CharField(
-        max_length=100,
+        max_length=220,
         verbose_name="Nome completo")
 
     data_nasc = models.DateField(
@@ -60,3 +60,4 @@ class Hospede(models.Model):
     
     class Meta:
         db_table = "hospede"
+        ordering = ['nome']

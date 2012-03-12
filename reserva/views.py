@@ -24,19 +24,54 @@
 __all__ = ('ListaReserva', 'AddReserva', 'HospedarReserva',
            'AtualizaReserva', 'CancelarReserva', 'ConfirmarReserva')
 
+import datetime
+import json
+
 from models import *
 from forms import *
 
+from hotsys.quarto.models import Quarto
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import (
     DeleteView, CreateView, UpdateView, ListView,
     FormView)
 
+class BuscarQuartosMixIn(object):
+    def _buscar_quartos(self):
+        data_inicial = self.request.GET.get('data_inicial')
+        data_final = self.request.GET.get('data_final')
+
+        try:
+            data_inicial = datetime.datetime.strptime(data_inicial, '%d/%m/%Y').date()
+        except ValueError:
+            return {'erro': u"data inicial inválida"}
+
+        try:
+            data_final = datetime.datetime.strptime(data_final, '%d/%m/%Y').date()
+        except ValueError:
+            return {'erro': u"data final inválida"}
+
+        data = []
+        for q in Quarto.objects.livres(data_inicial, data_final):
+            data.append([q.id, q.nome, float(q.preco), q.num_leitos])
+
+        return data
+
+    def get(self, *args, **kwargs):
+        acao = self.request.GET.get('acao')
+        
+        if acao == 'buscar_quartos':
+            resp = self._buscar_quartos()
+            return HttpResponse(json.dumps(resp))
+
+        return super(BuscarQuartosMixIn, self).get(*args, **kwargs)
+
 class ListaReserva(ListView):
     model = Reserva
     paginate_by = 20
 
-class AddReserva(CreateView):
+class AddReserva(BuscarQuartosMixIn, CreateView):
     model = Reserva
     success_url = "/reserva/"
     form_class = ReservaForm
@@ -46,7 +81,7 @@ class HospedarReserva(CreateView):
     success_url = "/reserva/"
     form_class = ReservaForm
 
-class AtualizaReserva(UpdateView):
+class AtualizaReserva(BuscarQuartosMixIn, UpdateView):
     model = Reserva
     success_url = "/reserva/"
     form_class = ReservaForm

@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block title %}Reservas{% endblock %}
 {% block conteudo %}
-<a href="add/">Adicionar nova reserva</a>
+<a class="button green" href="add/">Adicionar</a>
 
 {% if object_list %}
-<table>
+<table class="list">
   <thead>
     <tr>
       <th>Reservante</th><th>Telefone</th>
@@ -23,12 +23,12 @@
       <td>{% if object.confirmada %}Sim{% else %}Não{% endif %}</td>
       <td>
         {% if object.confirmada %}
-        <a href="hospedar/{{ object.id }}">Iniciar estadia</a>
+        <a class="button green"href="hospedar/{{ object.id }}">Iniciar estadia</a>
         {% else %}
-        <a href="confirmar/{{ object.id }}">Confirmar</a>|
+        <a class="button green"href="confirmar/{{ object.id }}">Confirmar</a>
         {% endif %}
-        <a href="cancelar/{{ object.id }}">Cancelar</a>|
-        <a href="atualiza/{{ object.id }}">Editar</a>
+        <a class="button red" href="cancelar/{{ object.id }}">Cancelar</a>
+        <a class="button" href="atualiza/{{ object.id }}">Editar</a>
       </td>
     </tr>
     {% endfor %}

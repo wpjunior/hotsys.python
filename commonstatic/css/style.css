@@ -161,7 +161,7 @@ a.button:link,
     font-weight: bold;
     margin: 0;
     outline: none;
-    padding: .4em 1em;
+    padding: .2em .5em;
     text-align: center;
     text-shadow: 0 1px 1px rgba(255, 255, 255, .5);
     text-decoration: none;

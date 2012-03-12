@@ -1,16 +1,70 @@
 {% extends "base.html" %}
+{% block extrahead %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.maskedinput-1.3.js"></script>
+<script type="text/javascript" src="/static/js/reserva.js"></script>
+{% endblock %}
+
 {% block title %}{% if object %}Atualizando{% else %}Criando{% endif %} Reserva{% endblock %}
+
 {% block conteudo %}
-<h3>
-  {% if object %}Atualizando{% else %}Criando{% endif %} Reserva
-</h3>
+<h3>{% if object %}Atualizando{% else %}Criando{% endif %} Reserva</h3>
 
 <form method="post" action=".">
   {% csrf_token %}
+  <div style="display: none;">{{ form.quarto }}</div>
 
   <table>
-    {{ form.as_table }}
+    <tbody>
+      <tr>
+        <th>{{ form.reservante.label }}:</th>
+        <td>{{ form.reservante }}</td>
+        {% if form.reservante.errors %}
+        <td class="errors">{{ form.reservante.errors }}</td>
+        {% endif %}
+      </tr><tr>
+        <th>{{ form.telefone.label }}:</th>
+        <td>{{ form.telefone }}</td>
+        {% if form.telefone.errors %}
+        <td class="errors">{{ form.telefone.errors }}</td>
+        {% endif %}
+      </tr>
+      <tr>
+        <th>{{ form.data_inicial.label }}:</th>
+        <td>{{ form.data_inicial }}</td>
+        {% if form.data_inicial.errors %}
+        <td class="errors">{{ form.data_inicial.errors }}</td>
+        {% endif %}
+      </tr>
+      <tr>
+        <th>{{ form.data_final.label }}:</th>
+        <td>{{ form.data_final }}</td>
+        {% if form.data_final.errors %}
+        <td class="errors">{{ form.data_final.errors }}</td>
+        {% endif %}
+      </tr>
+      <tr>
+        <td>&nbsp</td>
+        <td colspan="2">
+          <a id="buscar_quarto" class="button green" href="#">Buscar quartos</a>
+        </td>
+      </tr>
+    </tbody>
   </table>
+
+  <div id="quartos">
+    <h4>Quartos disponíveis</h4>
+    <table id="quarto_list" class="list" style="width: 450px;">
+      <thead>
+        <tr>
+          <th style="width: 10px;">&nbsp</th>
+          <th>Quarto</th><th>Preço Pernoite</th>
+          <th>Número de Leitos</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
 
   <input type="submit" value="{% if object %}Atualizar{% else %}Criar{% endif %}" />
 </form>

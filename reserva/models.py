@@ -32,7 +32,7 @@ class Reserva(models.Model):
     data_final = models.DateTimeField(blank=True, null=True)
 
     confirmada = models.BooleanField()
-    quartos = models.ManyToManyField(Quarto)
+    quarto = models.ForeignKey(Quarto)
 
     pago = models.DecimalField(decimal_places=2, max_digits=10,
                                verbose_name="Valor pré-pago",
