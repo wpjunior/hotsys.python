@@ -53,8 +53,9 @@ class BuscarQuartosMixIn(object):
             return {'erro': u"data final inválida"}
 
         data = []
-        for q in Quarto.objects.livres(data_inicial, data_final):
-            data.append([q.id, q.nome, float(q.preco), q.num_leitos])
+        for q in Quarto.objects.all():
+            if not q.tem_reserva(data_inicial, data_final):
+                data.append([q.id, q.nome, float(q.preco), q.num_leitos])
 
         return data
 

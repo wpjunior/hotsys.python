@@ -24,6 +24,7 @@
 from django.db import models
 from hospede.models import Hospede
 
+
 QUARTO_ESTADOS = (
     ('l', "Livre"),
     ('o', "Ocupado"),
@@ -66,6 +67,14 @@ class Quarto(models.Model):
     class Meta:
         db_table = "quarto"
         ordering = ['nome']
+
+
+    def tem_reserva(self, data_inicial, data_final):
+        from reserva.models import Reserva
+
+        return Reserva.objects.filter(
+            models.Q(data_inicial__range=(data_inicial, data_final))|
+            models.Q(data_final__range=(data_inicial, data_final))).count() > 0
 
 class Estadia(models.Model):
     data_inicial = models.DateTimeField()
