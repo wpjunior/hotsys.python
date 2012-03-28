@@ -21,34 +21,16 @@
 # junto com este programa, se não, escreva para a Fundação do Software
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-__all__ = ("QuartoForm", "InicarEstadiaForm")
+__all__ = ('HospedesField',)
 
-import datetime
+from django.forms.fields import TypedMultipleChoiceField
 
-from django import forms
-from models import *
-from fields import HospedesField
+class HospedesField(TypedMultipleChoiceField):
+    def __init__(self, *args, **kwargs):
 
-class QuartoForm(forms.ModelForm):
-    class Meta:
-        model = Quarto
-        exclude = ('estadia_atual', 'estado')
+        kwargs['coerce'] = int
 
+        super(HospedesField, self).__init__(*args, **kwargs)
 
-class InicarEstadiaForm(forms.Form):
-    data_inicial = forms.DateField(
-        label="Data inicial",
-        input_formats=('%d/%m/%Y',),
-        initial=datetime.date.today,
-        widget=forms.DateInput(format='%d/%m/%Y'))
-
-    data_final = forms.DateField(
-        label="Data inicial",
-        input_formats=('%d/%m/%Y',),
-        widget=forms.DateInput(format='%d/%m/%Y'))
-    
-    hospede = HospedesField()
-
-    def clean_hospede(self):
-        data = self.cleaned_data['hospede']
-        return Hospede.objects.in_bulk(data).values()
+    def valid_value(self, value):
+        return value.isdigit()

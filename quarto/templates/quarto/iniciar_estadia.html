@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Iniciando nova estadia{% endblock %}
+
+{% block extrahead %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.maskedinput-1.3.js"></script>
+<script type="text/javascript" src="/static/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery.ui.datepicker-pt-BR.js"></script>
+<script type="text/javascript" src="/static/js/iniciar_estadia.js"></script>
+<link type="text/css" href="/static/css/smoothness/jquery-ui-1.8.18.custom.css" rel="stylesheet" />
+<style type="text/css">
+  #hospede_cpf {width: 110px;}
+
+  #id_data_inicial, #id_data_final {width: 80px;}
+</style>
+{% endblock %}
+
+{% block conteudo %}
+<h3>Iniciando nova estadia</h3>
+
+<form method="post" action=".">
+  {% csrf_token %}
+
+  <table>
+    <tbody>
+      <tr>
+        <th>{{ form.data_inicial.label }}:</th>
+        <td>{{ form.data_inicial }}</td>
+        {% if form.data_inicial.errors %}
+        <td class="errors">{{ form.data_inicial.errors }}</td>
+        {% endif %}
+      </tr>
+
+      <tr>
+        <th>{{ form.data_final.label }}:</th>
+        <td>{{ form.data_final }}</td>
+        {% if form.data_final.errors %}
+        <td class="errors">{{ form.data_final.errors }}</td>
+        {% endif %}
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Hospedes</h3>
+  <table>
+    <tr>
+      <td>CPF:</td>
+      <td><input id="hospede_cpf" type="text"/></td>
+      <td><a id="add_hospede" class="button green" href="#">Adicionar</a></td>
+    </tr>
+  </table>
+
+  <table id="hospede_list">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>CPF</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <input type="submit" value="{% if object %}Atualizar{% else %}Iniciar{% endif %}" />
+</form>
+{% endblock %}

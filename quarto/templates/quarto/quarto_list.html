@@ -20,8 +20,19 @@
       <td>{{ object.preco|floatformat:2 }}</td>
       <td>{% if object.estadia_atual %}-{% endif %}</td>
       <td>
-        <a class="button" href="atualiza/{{ object.id }}">Editar</a>
-        <a class="button red" href="remove/{{ object.id }}">Deletar</a>
+        <p style="padding: 0px; margin: 0px;">
+          {% if object.estadia_atual %}
+          <a class="button red" href="finalizar/{{ object.id }}/">Finalizar</a>
+          <a class="button" href="consumo/{{ object.id }}/">Registrar Consumo</a>
+          <a class="button" href="dano/{{ object.id }}/">Registrar Dano</a>
+          {% else %}
+          <a class="button" href="hospedar/{{ object.id }}/">Iniciar Estadia</a>
+          {% endif %}
+        </p>
+        <p style="padding: 0px; margin: 7px 0px;">
+          <a class="button" href="atualiza/{{ object.id }}/">Editar</a>
+          <a class="button red" href="remove/{{ object.id }}/">Deletar</a>
+        </p>
       </td>
     </tr>
     {% endfor %}

@@ -21,11 +21,16 @@
 # junto com este programa, se não, escreva para a Fundação do Software
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-__all__ = ('AddQuarto', 'ListaQuarto', 'AtualizaQuarto', 'RemoveQuarto')
+__all__ = ('AddQuarto', 'ListaQuarto', 'AtualizaQuarto', 'RemoveQuarto',
+           'InicarEstadiaQuarto')
 
 from models import *
 from forms import *
-from django.views.generic import DeleteView, CreateView, UpdateView, ListView
+from hotsys.views import JSONResponse
+from django.shortcuts import get_object_or_404, redirect
+from django.views.generic import (
+    DeleteView, CreateView, UpdateView, ListView,
+    FormView)
 
 class AddQuarto(CreateView):
     model = Quarto
@@ -44,3 +49,61 @@ class RemoveQuarto(DeleteView):
 class ListaQuarto(ListView):
     model = Quarto
     paginate_by = 20
+
+class InicarEstadiaQuarto(FormView):
+    form_class = InicarEstadiaForm
+    template_name = "quarto/iniciar_estadia.html"
+    success_url = "/quarto/"
+    _quarto = None
+
+    def get_quarto(self):
+        if not self._quarto:
+            self._quarto = get_object_or_404(
+                Quarto, pk=self.kwargs.get('pk'),
+                estado='l')
+
+        return self._quarto
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super(InicarEstadiaQuarto, self).get_context_data(*args, **kwargs)
+        ctx['quarto'] = self.get_quarto()
+
+        return ctx
+                                             
+    def _get_hospede(self):
+        cpf = self.request.GET.get('cpf')
+
+        try:
+            hosp = Hospede.objects.get(cpf=cpf)
+        except Hospede.DoesNotExist:
+            return JSONResponse(None)
+        else:
+            return JSONResponse({'id': hosp.id,
+                                 'nome': hosp.nome,
+                                 'cpf': hosp.cpf})
+
+    def get(self, *args, **kwargs):
+        cmd = self.request.GET.get('cmd', None)
+
+        if cmd == 'getHospede':
+            return self._get_hospede()
+
+        return super(InicarEstadiaQuarto, self).get(*args, **kwargs)
+
+    def form_valid(self, form):
+        quarto = self.get_quarto()
+        
+        estadia = Estadia(
+            data_inicial=form.cleaned_data['data_inicial'],
+            data_final=form.cleaned_data['data_final'],
+            quarto=quarto)
+
+        estadia.save()
+        estadia.hospedes = form.cleaned_data['hospede']
+        estadia.save()
+
+        quarto.estadia_atual = estadia
+        quarto.estado = 'o' #ocupado
+        quarto.save()
+
+        return redirect(self.get_success_url())

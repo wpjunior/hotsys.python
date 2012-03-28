@@ -25,8 +25,16 @@ __all__ = ('HospedeForm',)
 
 from models import *
 from django import forms
+from django.contrib.localflavor.br.forms import BRCPFField
 
 class HospedeForm(forms.ModelForm):
+    cpf = BRCPFField(
+        label="CPF",
+        required=True,
+        error_messages={'invalid': u"CPF Inválido",
+                        'max_digits': "Este campo requer 11 digitos",
+                        'digits_only': "Este campo aceita apenas digitos"})
+
     data_nasc = forms.DateField(
         label="Data de nascimento",
         required=True,
