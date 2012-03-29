@@ -31,4 +31,5 @@ urlpatterns = patterns(
     url(r'^atualiza/(?P<pk>\d+)/$', AtualizaQuarto.as_view()),
     url(r'^hospedar/(?P<pk>\d+)/$', InicarEstadiaQuarto.as_view()),
     url(r'^remove/(?P<pk>\d+)/$', RemoveQuarto.as_view()),
+    url(r'^dano/(?P<pk>\d+)/$', AdicinarDanoQuarto.as_view()),
 )

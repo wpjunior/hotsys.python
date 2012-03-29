@@ -22,7 +22,7 @@
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 __all__ = ('AddQuarto', 'ListaQuarto', 'AtualizaQuarto', 'RemoveQuarto',
-           'InicarEstadiaQuarto')
+           'InicarEstadiaQuarto', 'AdicinarDanoQuarto')
 
 from models import *
 from forms import *
@@ -107,3 +107,37 @@ class InicarEstadiaQuarto(FormView):
         quarto.save()
 
         return redirect(self.get_success_url())
+
+
+class AdicinarDanoQuarto(FormView):
+    form_class = RegistrarDanoForm
+    template_name = "quarto/reg_dano.html"
+    _estadia = None
+    success_url = "/quarto/"
+
+    def get_estadia(self):
+        if not self._estadia:
+            quarto = get_object_or_404(
+                Quarto, pk=self.kwargs.get('pk'),
+                estado='o')
+
+            self._estadia = quarto.estadia_atual
+
+        return self._estadia
+
+    def form_valid(self, form):
+        dano = form.save(commit=False)
+        dano.estadia = self.get_estadia()
+        dano.save()
+
+        if dano.grave:
+            return redirect('/quarto/finalizar/%d/' % (dano.estadia.quarto.id))
+        else:
+            return redirect(self.get_success_url())
+        
+    def get_context_data(self, *args, **kwargs):
+        ctx = super(AdicinarDanoQuarto, self).get_context_data(*args, **kwargs)
+        
+        ctx['estadia'] = self.get_estadia()
+        
+        return ctx

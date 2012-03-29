@@ -21,7 +21,7 @@
 # junto com este programa, se não, escreva para a Fundação do Software
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-__all__ = ("QuartoForm", "InicarEstadiaForm")
+__all__ = ("QuartoForm", "InicarEstadiaForm", "RegistrarDanoForm")
 
 import datetime
 
@@ -52,3 +52,8 @@ class InicarEstadiaForm(forms.Form):
     def clean_hospede(self):
         data = self.cleaned_data['hospede']
         return Hospede.objects.in_bulk(data).values()
+
+class RegistrarDanoForm(forms.ModelForm):
+    class Meta:
+        model = Dano
+        exclude = ('estadia',)

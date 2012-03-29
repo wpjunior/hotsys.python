@@ -86,11 +86,22 @@ class Estadia(models.Model):
     class Meta:
         db_table = "estadia"
 
+    @property
+    def danos(self):
+        return Dano.objects.filter(estadia=self)
+
 class Dano(models.Model):
     estadia = models.ForeignKey("Estadia")
-    desc = models.CharField(max_length=200)
-    valor = models.DecimalField(decimal_places=2, max_digits=10)
-    grave = models.BooleanField()
+    desc = models.CharField(
+        max_length=200,
+        verbose_name=u"Descrição")
+
+    valor = models.DecimalField(
+        decimal_places=2, max_digits=10,
+        verbose_name="Valor")
+
+    grave = models.BooleanField(
+        verbose_name="Grave")
 
     class Meta:
         db_table = "dano"
