@@ -21,7 +21,7 @@
 # junto com este programa, se não, escreva para a Fundação do Software
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-__all__ = ('HospedesField',)
+__all__ = ('HospedesField', 'ProdutosField')
 
 from django.forms.fields import TypedMultipleChoiceField
 
@@ -34,3 +34,21 @@ class HospedesField(TypedMultipleChoiceField):
 
     def valid_value(self, value):
         return value.isdigit()
+
+class ProdutosField(TypedMultipleChoiceField):
+    def __init__(self, *args, **kwargs):
+
+        kwargs['coerce'] = str
+
+        super(ProdutosField, self).__init__(*args, **kwargs)
+
+    def valid_value(self, value):
+        d = value.split('-')
+
+        if len(d) != 2:
+            return False
+
+        if not d[0].isdigit() or not d[1].isdigit():
+            return False
+        
+        return True

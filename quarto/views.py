@@ -22,12 +22,13 @@
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 __all__ = ('AddQuarto', 'ListaQuarto', 'AtualizaQuarto', 'RemoveQuarto',
-           'InicarEstadiaQuarto', 'AdicinarDanoQuarto')
+           'InicarEstadiaQuarto', 'AdicinarDanoQuarto', 'ConsumoQuarto')
 
 from models import *
 from forms import *
 from hotsys.views import JSONResponse
 from django.shortcuts import get_object_or_404, redirect
+from hotsys.produto.models import Produto, ProdutoItem
 from django.views.generic import (
     DeleteView, CreateView, UpdateView, ListView,
     FormView)
@@ -141,3 +142,61 @@ class AdicinarDanoQuarto(FormView):
         ctx['estadia'] = self.get_estadia()
         
         return ctx
+
+class ConsumoQuarto(FormView):
+    form_class = RegistrarConsumoForm
+    template_name = "quarto/consumo.html"
+    _estadia = None
+    success_url = "/quarto/"
+
+    def get_estadia(self):
+        if not self._estadia:
+            quarto = get_object_or_404(
+                Quarto, pk=self.kwargs.get('pk'),
+                estado='o')
+
+            self._estadia = quarto.estadia_atual
+
+        return self._estadia
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super(ConsumoQuarto, self).get_context_data(*args, **kwargs)
+        
+        ctx['estadia'] = self.get_estadia()
+        ctx['add_form'] = AddConsumoForm()
+        
+        return ctx
+
+    def _get_produto(self):
+        produto_id = self.request.GET.get('produtoId', None)
+
+        try:
+            prod = Produto.objects.get(id=produto_id)
+        except Produto.DoesNotExist:
+            return JSONResponse({'erro': "Produto não encontrado"})
+
+        return JSONResponse({'nome': prod.nome, 'valor': float(prod.valor),
+                             'id': prod.id})
+
+    def get(self, *args, **kwargs):
+        cmd = self.request.GET.get('cmd', None)
+
+        if cmd == 'getProduto':
+            return self._get_produto()
+
+        return super(ConsumoQuarto, self).get(*args, **kwargs)
+
+    def form_valid(self, form):
+        produtos = form.save()
+        estadia = self.get_estadia()
+        
+        for produto, qtde in produtos:
+            item = ProdutoItem(
+                produto=produto,
+                estadia=estadia,
+                qtde=qtde,
+                valor_total=produto.valor*qtde)
+            
+            item.save()
+
+        return redirect(self.get_success_url())

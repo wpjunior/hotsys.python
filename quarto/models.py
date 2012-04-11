@@ -90,6 +90,11 @@ class Estadia(models.Model):
     def danos(self):
         return Dano.objects.filter(estadia=self)
 
+    @property
+    def produtos(self):
+        from hotsys.produto.models import ProdutoItem
+        return ProdutoItem.objects.filter(estadia=self)
+
 class Dano(models.Model):
     estadia = models.ForeignKey("Estadia")
     desc = models.CharField(

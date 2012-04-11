@@ -21,13 +21,15 @@
 # junto com este programa, se não, escreva para a Fundação do Software
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-__all__ = ("QuartoForm", "InicarEstadiaForm", "RegistrarDanoForm")
+__all__ = ("QuartoForm", "InicarEstadiaForm", "RegistrarDanoForm",
+           "RegistrarConsumoForm", "AddConsumoForm")
 
 import datetime
 
 from django import forms
 from models import *
-from fields import HospedesField
+from fields import HospedesField, ProdutosField
+from hotsys.produto.models import Produto
 
 class QuartoForm(forms.ModelForm):
     class Meta:
@@ -57,3 +59,37 @@ class RegistrarDanoForm(forms.ModelForm):
     class Meta:
         model = Dano
         exclude = ('estadia',)
+
+class RegistrarConsumoForm(forms.Form):
+    produto = ProdutosField()
+
+    def clean_produto(self):
+        data = self.cleaned_data['produto']
+        qtdes = {}
+        
+        for d in data:
+            id, qtde = d.split('-')
+            qtdes[int(id)] = int(qtde)
+        
+        prods = Produto.objects.in_bulk(qtdes.keys())
+
+        return [(v, qtdes[k]) for k, v in prods.iteritems()]
+
+
+    def save(self, *args, **kwargs):
+        return self.cleaned_data['produto']
+
+class AddConsumoForm(forms.Form):
+    produto = forms.ChoiceField(
+        label="Produto")
+
+    qtde = forms.IntegerField(
+        initial=1,
+        label="Quantidade")
+
+
+    def __init__(self, *args, **kwargs):
+        super(AddConsumoForm, self).__init__(*args, **kwargs)
+        choices = [(p.id, p.nome) for p in Produto.objects.all()]
+
+        self.fields['produto'].choices = [('', '-----')] +choices

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Registrar consumo{% endblock %}
+{% block extrahead %}
+<script type="text/javascript" src="/static/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/static/js/consumo.js"></script>
+
+<style type="text/css">
+  #id_qtde {width: 50px;}
+</style>
+<link type="text/css" href="/static/css/smoothness/jquery-ui-1.8.18.custom.css" rel="stylesheet" />
+{% endblock %}
+{% block conteudo %}
+<h3>Registrar consumo</h3>
+
+<table>
+  <tr>
+    <th>{{ add_form.produto.label }}:</th>
+    <td>{{ add_form.produto }}</td>
+    
+    <th>{{ add_form.qtde.label }}:</th>
+    <td>{{ add_form.qtde }}</td>
+
+    <td><input id="add_produto" class="button green" type="button" value="Adicionar" /></td>
+  </tr>
+</table>
+
+<form method="post" action=".">
+  {% csrf_token %}
+  {{ form.errors }}
+  <table id="consumo_table" class="list">
+    <thead>
+      <tr><th>Nome</th><th>Valor Unitário</th><th>Valor Total</th><th>&nbsp</th></tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <input type="submit" value="Registrar" />
+</form>
+{% endblock %}
