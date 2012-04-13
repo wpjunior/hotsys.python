@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}Finalizar Estadia{% endblock %}
+
+{% block conteudo %}
+<h3>Finalizar estadia</h3>
+
+<table class="list">
+  <tr>
+    <td>Data inicial:</td>
+    <td>{{ estadia.data_inicial|date:"d/m/Y" }}</td>
+  </tr><tr>
+    <td>Quantidade de dias hóspedados:</td>
+    <td>{{ estadia.qtde_dias }}</td>
+  </tr><tr>
+    <td>Total pela estadia:</td>
+    <td>{{ estadia.total_estadia|floatformat:"2" }}</td>
+  </tr>
+  <tr>
+    <td>Total a pagar:</td>
+    <td>{{ estadia.total_pagar|floatformat:"2" }}</td>
+  </tr>
+  <tr>
+    <td>&nbsp</td>
+    <td>
+      <form action="." method="post">
+        {% csrf_token %}
+        <input class="button red" type="submit" value="Finalizar Estadia" /></td>
+    </form>
+  </tr>
+</table>
+
+<table class="list">
+  <thead>
+    <tr>
+      <th colspan="2">
+        <h4>Hóspedes</h4>
+      </th>
+    </tr>
+    <tr>
+      <th>Nome</th>
+      <th>CPF</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for h in estadia.hospedes.all %}
+    <tr>
+      <td>{{ h.nome }}</td>
+      <td>{{ h.cpf }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  
+</table>
+
+
+{% if estadia.produtos %}
+<table class="list">
+  <thead>
+    <tr>
+      <th colspan="3">
+        <h4>Produtos consumidos</h4>
+      </th>
+    </tr>
+    <tr>
+      <th>Descrição</th>
+      <th>Quantidade</th>
+      <th>Valor</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for p in estadia.produtos %}
+    <tr>
+      <td>{{ p.produto.nome }}</td>
+      <td>{{ p.qtde }}</td>
+      <td>{{ p.valor_total|floatformat:"2" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  <tfoot>
+    <tr>
+      <td>&nbsp</td><td>Total</td>
+      <td>{{ estadia.total_produtos|floatformat:"2" }}</td>
+    </tr>
+  </tfoot>
+</table>
+{% endif %}
+
+{% if estadia.danos %}
+<table class="list">
+  <thead>
+    <tr>
+      <th colspan="3">
+        <h4>Danos realizados</h4>
+      </th>
+    </tr>
+    <tr>
+      <th>Descrição</th>
+      <th>Grave</th>
+      <th>Valor</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for d in estadia.danos %}
+    <tr>
+      <td>{{ d.desc }}</td>
+      <td>{% if d.grave %}Sim{% else %}Não{% endif %}</td>
+      <td>{{ d.valor|floatformat:"2" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  <tfoot>
+    <tr>
+      <td>&nbsp</td><td>Total</td>
+      <td>{{ estadia.total_danos|floatformat:"2" }}</td>
+    </tr>
+  </tfoot>
+</table>
+{% endif %}
+
+{% endblock %}

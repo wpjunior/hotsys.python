@@ -21,9 +21,12 @@
 # junto com este programa, se não, escreva para a Fundação do Software
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+
+import datetime
 from django.db import models
 from hospede.models import Hospede
-
+from django.db.models import Sum
+from decimal import Decimal
 
 QUARTO_ESTADOS = (
     ('l', "Livre"),
@@ -79,12 +82,27 @@ class Quarto(models.Model):
 class Estadia(models.Model):
     data_inicial = models.DateTimeField()
     data_final = models.DateTimeField(blank=True, null=True)
+    finalizada = models.BooleanField(default=False)
     hospedes = models.ManyToManyField(Hospede)
     quarto = models.ForeignKey(Quarto,
                                related_name="quarto utilizada")
 
     class Meta:
         db_table = "estadia"
+
+    @property
+    def qtde_dias(self):
+        """
+        Retorna quantidade de dias hospedados
+        """
+        
+        if self.finalizada:
+            f = self.data_final
+        else:
+            f = datetime.datetime.now()
+
+        #TODO: implementar regra de negocio do horario
+        return (f - self.data_inicial).days
 
     @property
     def danos(self):
@@ -94,6 +112,59 @@ class Estadia(models.Model):
     def produtos(self):
         from hotsys.produto.models import ProdutoItem
         return ProdutoItem.objects.filter(estadia=self)
+
+    @property
+    def total_danos(self):
+        """
+        Retorna o valor total de danos
+        """
+        data = self.danos.aggregate(Sum('valor'))
+        return data['valor__sum']
+
+    @property
+    def total_produtos(self):
+        """
+        Retorna o valor total de danos
+        """
+        data = self.produtos.aggregate(Sum('valor_total'))
+        return data['valor_total__sum']
+
+    @property
+    def total_estadia(self):
+        """
+        Retorna o valor das estadias
+        """
+        return self.qtde_dias * self.quarto.preco
+
+    @property
+    def total_pagar(self):
+        """
+        Total a pagar da estadia
+        """
+        total = Decimal('0.00')
+        t_danos = self.total_danos
+        t_produtos = self.total_produtos
+        t_estadia = self.total_estadia
+
+        if t_danos:
+            total += t_danos
+
+        if t_produtos:
+            total += t_produtos
+
+        if t_estadia:
+            total += t_estadia
+
+        return total
+
+    def finalizar(self):
+        self.data_final = datetime.datetime.now()
+        self.finalizada = True
+        self.save()
+
+        self.quarto.estadia_atual = None
+        self.quarto.estado = 'l' #Livre
+        self.quarto.save()
 
 class Dano(models.Model):
     estadia = models.ForeignKey("Estadia")

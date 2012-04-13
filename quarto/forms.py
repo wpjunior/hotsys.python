@@ -45,7 +45,7 @@ class InicarEstadiaForm(forms.Form):
         widget=forms.DateInput(format='%d/%m/%Y'))
 
     data_final = forms.DateField(
-        label="Data inicial",
+        label="Data final",
         input_formats=('%d/%m/%Y',),
         widget=forms.DateInput(format='%d/%m/%Y'))
     

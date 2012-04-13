@@ -22,7 +22,8 @@
 # Livre(FSF) Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 __all__ = ('AddQuarto', 'ListaQuarto', 'AtualizaQuarto', 'RemoveQuarto',
-           'InicarEstadiaQuarto', 'AdicinarDanoQuarto', 'ConsumoQuarto')
+           'InicarEstadiaQuarto', 'AdicinarDanoQuarto', 'ConsumoQuarto',
+           'FinalizarQuarto')
 
 from models import *
 from forms import *
@@ -31,11 +32,12 @@ from django.shortcuts import get_object_or_404, redirect
 from hotsys.produto.models import Produto, ProdutoItem
 from django.views.generic import (
     DeleteView, CreateView, UpdateView, ListView,
+    TemplateView,
     FormView)
 
 class AddQuarto(CreateView):
     model = Quarto
-    success_url = "/hospede/"
+    success_url = "/quarto/"
     form_class = QuartoForm
 
 class AtualizaQuarto(UpdateView):
@@ -107,7 +109,7 @@ class InicarEstadiaQuarto(FormView):
         quarto.estado = 'o' #ocupado
         quarto.save()
 
-        return redirect(self.get_success_url())
+        return redirect(self.success_url)
 
 
 class AdicinarDanoQuarto(FormView):
@@ -198,5 +200,35 @@ class ConsumoQuarto(FormView):
                 valor_total=produto.valor*qtde)
             
             item.save()
+
+        return redirect(self.get_success_url())
+
+
+class FinalizarQuarto(TemplateView):
+    template_name = "quarto/finalizar.html"
+    _estadia = None
+    success_url = "/quarto/"
+
+    def get_estadia(self):
+        if not self._estadia:
+            quarto = get_object_or_404(
+                Quarto, pk=self.kwargs.get('pk'),
+                estado='o')
+
+            self._estadia = quarto.estadia_atual
+
+        return self._estadia
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super(FinalizarQuarto, self).get_context_data(*args, **kwargs)
+        
+        ctx['estadia'] = self.get_estadia()
+        
+        return ctx
+
+
+    def post(self, *args, **kwargs):
+        est = self.get_estadia()
+        est.finalizar()
 
         return redirect(self.get_success_url())
