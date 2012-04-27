@@ -23,7 +23,7 @@
 
 __all__ = ('AddQuarto', 'ListaQuarto', 'AtualizaQuarto', 'RemoveQuarto',
            'InicarEstadiaQuarto', 'AdicinarDanoQuarto', 'ConsumoQuarto',
-           'FinalizarQuarto')
+           'FinalizarQuarto', 'RelatorioEstadiasView')
 
 from models import *
 from forms import *
@@ -232,3 +232,18 @@ class FinalizarQuarto(TemplateView):
         est.finalizar()
 
         return redirect(self.get_success_url())
+
+
+
+class RelatorioEstadiasView(TemplateView):
+    template_name = "quarto/relatorio.html"
+
+    def get_relatorio(self):
+        return RelatorioEstadias()
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super(RelatorioEstadiasView, self).get_context_data(*args, **kwargs)
+
+        ctx['relatorio'] = self.get_relatorio()
+        
+        return ctx        

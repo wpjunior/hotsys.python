@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Relatório de Estadias{% endblock %}
+{% block conteudo %}
+<h2>Relatório de Estadias</h2>
+{% for mes in relatorio %}
+<h3>{{ mes.mes|date:"F/Y" }}</h3>
+
+<table class="list">
+  <thead>
+    <tr>
+      <th>Nome do quarto</th>
+      <th>Data inicial</th>
+      <th>Data final</th>
+      <th>Total á pagar</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for estadia in mes %}
+    <tr>
+      <td>{{ estadia.quarto.nome }}</td>
+      <td>{{ estadia.data_inicial|date:"d/m/Y" }}</td>
+      <td>{{ estadia.data_final|date:"d/m/Y" }}</td>
+      <td>{{ estadia.total_pagar }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% endfor %}
+
+{% endblock %}

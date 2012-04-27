@@ -34,13 +34,6 @@ QUARTO_ESTADOS = (
     ('r', "Reservado"),
     ('m', u"Manutenção"))
 
-
-class QuartoManager(models.Manager):
-    def livres(self, data_inicial, data_final):
-        return self.raw("""select qrt.* from quarto qrt, reserva rsv
-                           where qrt.id = rsv.quarto_id
-""");
-
 class Quarto(models.Model):
     nome = models.CharField(
         max_length=150,
@@ -65,14 +58,15 @@ class Quarto(models.Model):
         blank=True, null=True,
         related_name="estadia atual")
 
-    objects = QuartoManager()
-
     class Meta:
         db_table = "quarto"
         ordering = ['nome']
 
 
     def tem_reserva(self, data_inicial, data_final):
+        """
+        Retorna se o quarto atual possui reserva.
+        """
         from reserva.models import Reserva
 
         return Reserva.objects.filter(
@@ -106,10 +100,16 @@ class Estadia(models.Model):
 
     @property
     def danos(self):
+        """
+        Retorna a lista de danos da estadia
+        """
         return Dano.objects.filter(estadia=self)
 
     @property
     def produtos(self):
+        """
+        Retorna a lista de produtos utilizados
+        """
         from hotsys.produto.models import ProdutoItem
         return ProdutoItem.objects.filter(estadia=self)
 
@@ -181,3 +181,27 @@ class Dano(models.Model):
 
     class Meta:
         db_table = "dano"
+
+
+class RelatorioEstadiasMes(object):
+    def __init__(self, mes):
+        self.mes = mes
+        self.queryset = Estadia.objects.filter(
+            finalizada=True,
+            data_inicial__year=mes.year,
+            data_inicial__month=mes.month)
+
+    def __iter__(self):
+        return self.queryset.__iter__()
+        
+class RelatorioEstadias(object):
+    def __init__(self):
+        self.parts = [
+            RelatorioEstadiasMes(d)
+            for d in
+            Estadia.objects.filter(finalizada=True).dates(
+                'data_inicial', 'month', order='DESC')]
+
+
+    def __iter__(self):
+        return self.parts.__iter__()
