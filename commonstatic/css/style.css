@@ -1,9 +1,14 @@
 body {
   margin: 0;
-  background: #eeeeec;
+  background-color: #babdb6;
   font: 13px "DejaVu Sans Condensed", "Bistream Versa Sans", arial, sans-serif;
 }
-#base {width: 800px; background-color: white; margin: 0px auto}
+#base {width: 800px; background-color: #eeeeec; margin: 0px auto; border-radius: 15px; -moz-border-radius: 15px; min-height: 400px; margin-top: 10px; -moz-box-shadow: 10px 10px 10px #888;
+-webkit-box-shadow: 10px 10px 10px #888;
+box-shadow: 10px 10px 10px #888;}
+
+#header {padding: 5px 15px;}
+#header img {float: left; padding: 0px 10px 0px 0px;}
 #content {margin-top: 20px; width: 800px; margin: 0px auto;}
 .box {width: 600px; height: 460px;}
 form label {display: block; padding-top: 5px;}
@@ -80,7 +85,6 @@ div#menu {
 table.list {
     font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
     font-size: 12px;
-    background: white;
     width: 750px;
     text-align: left;
     border-spacing: 0;
@@ -341,3 +345,5 @@ a.button.red:active,
       -webkit-box-shadow: none;
       box-shadow: none;
 }
+
+form label {display: inline;}

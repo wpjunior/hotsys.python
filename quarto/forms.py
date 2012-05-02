@@ -49,11 +49,20 @@ class InicarEstadiaForm(forms.Form):
         input_formats=('%d/%m/%Y',),
         widget=forms.DateInput(format='%d/%m/%Y'))
     
+    reserva = forms.CharField(
+        widget=forms.HiddenInput,
+        required=False)
+
     hospede = HospedesField()
 
     def clean_hospede(self):
         data = self.cleaned_data['hospede']
         return Hospede.objects.in_bulk(data).values()
+
+    def set_reserva(self, reserva):
+        self.initial['data_inicial'] = reserva.data_inicial
+        self.initial['data_final'] = reserva.data_final
+        self.initial['reserva'] = reserva.id
 
 class RegistrarDanoForm(forms.ModelForm):
     class Meta:

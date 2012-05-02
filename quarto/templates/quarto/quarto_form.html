@@ -6,12 +6,8 @@
 </h3>
 
 <form method="post" action=".">
-  {% csrf_token %}
-
-  <table>
-    {{ form.as_table }}
-  </table>
-
+  {% include "form_snippet.html" %}
+  <input type="button" value="Voltar" onclick="history.go(-1)">
   <input type="submit" value="{% if object %}Atualizar{% else %}Criar{% endif %}" />
 </form>
 {% endblock %}

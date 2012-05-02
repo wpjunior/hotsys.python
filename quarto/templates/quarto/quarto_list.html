@@ -18,7 +18,10 @@
       <td>{{ object.nome }}</td>
       <td>{{ object.get_estado_display }}</td>
       <td>{{ object.preco|floatformat:2 }}</td>
-      <td>{% if object.estadia_atual %}-{% endif %}</td>
+      <td>{% if object.estadia_atual %}
+        <a href="{{ object.estadia_atual.get_absolute_url }}">Detalhes</a>
+        {% endif %}
+      </td>
       <td>
         <p style="padding: 0px; margin: 0px;">
           {% if object.estadia_atual %}

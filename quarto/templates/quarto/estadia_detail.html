@@ -1,45 +1,42 @@
 {% extends "base.html" %}
-{% block title %}Finalizar Estadia{% endblock %}
+{% block title %}Detalhes da Estadia{% endblock %}
 
 {% block conteudo %}
-<h3>Finalizar estadia</h3>
+<h2>Detalhes da Estadia</h2>
 
 <table class="list">
-  <tr>
-    <td>Data inicial:</td>
-    <td>{{ estadia.data_inicial|date:"d/m/Y" }}</td>
-  </tr><tr>
-    <td>Quantidade de dias hóspedados:</td>
-    <td>{{ estadia.qtde_dias }}</td>
-  </tr><tr>
-    <td>Quantidade de dias hóspedados:</td>
-    <td>{{ estadia.qtde_dias }}</td>
-  </tr><tr>
-    <td>Total pela estadia:</td>
-    <td>{{ estadia.total_estadia|floatformat:"2" }}</td>
-  </tr>
-  <tr>
-    <td>Valor total:</td>
-    <td>{{ estadia.valor_total|floatformat:"2" }}</td>
-  </tr>
-  {% if estadia.pre_pago %}
-  <tr>
-    <td>Valor adiantado (reserva):</td>
-    <td> - {{ estadia.pre_pago|floatformat:"2" }}</td>
-  </tr>
-  {% endif %}
-  <tr>
-    <td>Total a pagar:</td>
-    <td>{{ estadia.total_pagar|floatformat:"2" }}</td>
-  </tr>
-  <tr>
-    <td>&nbsp</td>
-    <td>
-      <form action="." method="post">
-        {% csrf_token %}
-        <input class="button red" type="submit" value="Finalizar Estadia" /></td>
-    </form>
-  </tr>
+  <tbody>
+    <tr>
+      <th>Data inicial:</th>
+      <td>{{ object.data_inicial|date:"d/m/Y" }}</td>
+    </tr><tr>
+      <th>Data final:</th>
+      <td>{{ object.data_final|date:"d/m/Y" }}</td>
+    </tr><tr>
+      <th>Quantidade de dias hóspedados:</th>
+      <td>{{ estadia.qtde_dias }}</td>
+    </tr><tr>
+      <th>Finalizada:</th>
+      <td>{% if object.finalizada %}Sim{% else %}Não{% endif %}</td>
+    </tr><tr>
+      <th>Quarto:</th>
+      <td>{{ object.quarto.nome }}</td>
+    </tr>
+    <tr>
+      <th>Valor total:</th>
+      <td>{{ estadia.valor_total|floatformat:"2" }}</td>
+    </tr>
+    {% if estadia.pre_pago %}
+    <tr>
+      <th>Valor adiantado (reserva):</th>
+      <td> - {{ estadia.pre_pago|floatformat:"2" }}</td>
+    </tr>
+    {% endif %}
+    <tr>
+      <th>Total a pagar:</th>
+      <td>{{ estadia.total_pagar|floatformat:"2" }}</td>
+    </tr>
+  </tbody>
 </table>
 
 <table class="list">
@@ -56,7 +53,7 @@
   </thead>
 
   <tbody>
-    {% for h in estadia.hospedes.all %}
+    {% for h in object.hospedes.all %}
     <tr>
       <td>{{ h.nome }}</td>
       <td>{{ h.cpf }}</td>
@@ -66,8 +63,7 @@
   
 </table>
 
-
-{% if estadia.produtos %}
+{% if object.produtos %}
 <table class="list">
   <thead>
     <tr>
@@ -83,7 +79,7 @@
   </thead>
 
   <tbody>
-    {% for p in estadia.produtos %}
+    {% for p in object.produtos %}
     <tr>
       <td>{{ p.produto.nome }}</td>
       <td>{{ p.qtde }}</td>
@@ -100,7 +96,7 @@
 </table>
 {% endif %}
 
-{% if estadia.danos %}
+{% if object.danos %}
 <table class="list">
   <thead>
     <tr>
@@ -116,7 +112,7 @@
   </thead>
 
   <tbody>
-    {% for d in estadia.danos %}
+    {% for d in object.danos %}
     <tr>
       <td>{{ d.desc }}</td>
       <td>{% if d.grave %}Sim{% else %}Não{% endif %}</td>

@@ -18,7 +18,7 @@
     <tr>
       <td>{{ object.nome }}</td>
       <td>{{ object.valor|floatformat:2 }}</td>
-      <td>{{ object.qtde }}</td>
+      <td>{% firstof object.qtde "-" %}</td>
       <td>
         <a href="atualiza/{{ object.id }}" class="button">Editar</a>
         <a href="remove/{{ object.id }}" class="button red">Deletar</a>

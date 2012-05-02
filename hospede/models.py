@@ -40,7 +40,8 @@ class Hospede(models.Model):
 
     telefone = models.CharField(
         max_length=16,
-        verbose_name="Telefone")
+        verbose_name="Telefone",
+        null=True, blank=True)
 
     logradouro = models.CharField(
         max_length=250,

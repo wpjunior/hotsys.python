@@ -23,16 +23,17 @@
 
 __all__ = ('AddQuarto', 'ListaQuarto', 'AtualizaQuarto', 'RemoveQuarto',
            'InicarEstadiaQuarto', 'AdicinarDanoQuarto', 'ConsumoQuarto',
-           'FinalizarQuarto', 'RelatorioEstadiasView')
+           'FinalizarQuarto', 'RelatorioEstadiasView', 'DetalheEstadia')
 
 from models import *
 from forms import *
 from hotsys.views import JSONResponse
 from django.shortcuts import get_object_or_404, redirect
 from hotsys.produto.models import Produto, ProdutoItem
+from hotsys.reserva.models import Reserva
 from django.views.generic import (
     DeleteView, CreateView, UpdateView, ListView,
-    TemplateView,
+    TemplateView, DetailView,
     FormView)
 
 class AddQuarto(CreateView):
@@ -58,6 +59,33 @@ class InicarEstadiaQuarto(FormView):
     template_name = "quarto/iniciar_estadia.html"
     success_url = "/quarto/"
     _quarto = None
+    _reserva = None
+
+    def get_reserva(self):
+        if not self._reserva:
+            if self.request.META['REQUEST_METHOD'] == 'GET':
+                reserva_id = self.request.GET.get('reserva', None)
+            else:
+                reserva_id = self.request.POST.get('reserva', None)
+
+            if reserva_id:
+                try:
+                    reserva = Reserva.objects.get(id=int(reserva_id))
+                except Reserva.DoesNotExist:
+                    reserva = None
+                    
+                self._reserva = reserva
+            
+        return self._reserva
+
+    def get_form(self, *args, **kwargs):
+        form = super(InicarEstadiaQuarto, self).get_form(*args, **kwargs)
+        reserva = self.get_reserva()
+
+        if reserva:
+            form.set_reserva(reserva)
+
+        return form
 
     def get_quarto(self):
         if not self._quarto:
@@ -95,11 +123,17 @@ class InicarEstadiaQuarto(FormView):
 
     def form_valid(self, form):
         quarto = self.get_quarto()
-        
+        reserva = self.get_reserva()
+
         estadia = Estadia(
             data_inicial=form.cleaned_data['data_inicial'],
             data_final=form.cleaned_data['data_final'],
             quarto=quarto)
+
+        if reserva:
+            if reserva.pago:
+                estadia.pre_pago = reserva.pago
+            reserva.delete()
 
         estadia.save()
         estadia.hospedes = form.cleaned_data['hospede']
@@ -136,7 +170,7 @@ class AdicinarDanoQuarto(FormView):
         if dano.grave:
             return redirect('/quarto/finalizar/%d/' % (dano.estadia.quarto.id))
         else:
-            return redirect(self.get_success_url())
+            return redirect(self.success_url)
         
     def get_context_data(self, *args, **kwargs):
         ctx = super(AdicinarDanoQuarto, self).get_context_data(*args, **kwargs)
@@ -201,6 +235,10 @@ class ConsumoQuarto(FormView):
             
             item.save()
 
+            if produto.qtde != None:
+                produto.qtde -= qtde
+                produto.save()
+
         return redirect(self.get_success_url())
 
 
@@ -231,7 +269,7 @@ class FinalizarQuarto(TemplateView):
         est = self.get_estadia()
         est.finalizar()
 
-        return redirect(self.get_success_url())
+        return redirect(self.success_url)
 
 
 
@@ -247,3 +285,7 @@ class RelatorioEstadiasView(TemplateView):
         ctx['relatorio'] = self.get_relatorio()
         
         return ctx        
+
+
+class DetalheEstadia(DetailView):
+    model = Estadia

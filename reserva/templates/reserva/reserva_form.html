@@ -8,35 +8,35 @@
 
 {% block conteudo %}
 <h3>{% if object %}Atualizando{% else %}Criando{% endif %} Reserva</h3>
+<small>* Campo obrigatório</small>
 
 <form method="post" action=".">
   {% csrf_token %}
   <div style="display: none;">{{ form.quarto }}</div>
-
   <table>
     <tbody>
       <tr>
-        <th>{{ form.reservante.label }}:</th>
+        <th>* {{ form.reservante.label }}:</th>
         <td>{{ form.reservante }}</td>
         {% if form.reservante.errors %}
         <td class="errors">{{ form.reservante.errors }}</td>
         {% endif %}
       </tr><tr>
-        <th>{{ form.telefone.label }}:</th>
+        <th>* {{ form.telefone.label }}:</th>
         <td>{{ form.telefone }}</td>
         {% if form.telefone.errors %}
         <td class="errors">{{ form.telefone.errors }}</td>
         {% endif %}
       </tr>
       <tr>
-        <th>{{ form.data_inicial.label }}:</th>
+        <th>* {{ form.data_inicial.label }}:</th>
         <td>{{ form.data_inicial }}</td>
         {% if form.data_inicial.errors %}
         <td class="errors">{{ form.data_inicial.errors }}</td>
         {% endif %}
       </tr>
       <tr>
-        <th>{{ form.data_final.label }}:</th>
+        <th>* {{ form.data_final.label }}:</th>
         <td>{{ form.data_final }}</td>
         {% if form.data_final.errors %}
         <td class="errors">{{ form.data_final.errors }}</td>

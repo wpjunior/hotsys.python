@@ -11,7 +11,8 @@
       <th>Nome do quarto</th>
       <th>Data inicial</th>
       <th>Data final</th>
-      <th>Total á pagar</th>
+      <th>Valor total</th>
+      <th>&nbsp</th>
     </tr>
   </thead>
   <tbody>
@@ -20,13 +21,16 @@
       <td>{{ estadia.quarto.nome }}</td>
       <td>{{ estadia.data_inicial|date:"d/m/Y" }}</td>
       <td>{{ estadia.data_final|date:"d/m/Y" }}</td>
-      <td>{{ estadia.total_pagar }}</td>
+      <td>{{ estadia.valor_total }}</td>
+      <td><a href="{{ estadia.get_absolute_url }}">Detalhes</a></td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
 
 
+{% empty %}
+<h4>Nenhuma estadia para ser exibida</h4>
 {% endfor %}
 
 {% endblock %}

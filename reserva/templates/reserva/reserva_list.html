@@ -23,7 +23,7 @@
       <td>{% if object.confirmada %}Sim{% else %}Não{% endif %}</td>
       <td>
         {% if object.confirmada %}
-        <a class="button green"href="hospedar/{{ object.id }}">Iniciar estadia</a>
+        <a class="button green"href="/quarto/hospedar/{{ object.quarto.id }}/?reserva={{ object.id }}">Iniciar estadia</a>
         {% else %}
         <a class="button green"href="confirmar/{{ object.id }}">Confirmar</a>
         {% endif %}

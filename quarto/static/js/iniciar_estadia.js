@@ -9,7 +9,7 @@ $(document).ready(function (e) {
     }
 
     var cadastraHospede = function (cpf) {
-        console.info(cpf);
+        alert('CPF não cadastrado');
     }
 
     var addHospede = function (cpf) {

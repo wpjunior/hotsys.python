@@ -1,0 +1,32 @@
+<small>* Campo obrigatório</small>
+<!-- ERROS -->
+{% if form.errors %}
+{% if form.non_field_errors %}
+<ul class="errorlist">
+  {% for error in form.non_field_errors %}
+  <li>{{ error|escape }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endif %}
+
+<!-- ERROS -->
+{% csrf_token %}
+<table>
+  <tbody>
+    {% for field in form %}
+    <tr id="field-{{ field.name }}" class="field{% if field.errors %} perror{% endif %}{% if field.field.required %} required{% endif %}">
+      <th>{% if field.field.required %}* {% endif %}{{ field.label_tag }}:</tH>
+      <td>{{ field }}</td>
+      {% if field.errors %}
+      <td>
+        <ul class="errorlist">
+          {% for error in field.errors %}
+          <li>{{ error|escape }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+</table>

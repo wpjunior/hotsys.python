@@ -24,19 +24,19 @@
   <table>
     <tbody>
       <tr>
-        <th>{{ form.cpf.label }}:</th>
+        <th>* {{ form.cpf.label }}:</th>
         <td>{{ form.cpf }}</td>
         {% if form.cpf.errors %}
         <td class="errors">{{ form.cpf.errors }}</td>
         {% endif %}
       </tr><tr>
-        <th>{{ form.nome.label }}:</th>
+        <th>* {{ form.nome.label }}:</th>
         <td>{{ form.nome }}</td>
         {% if form.nome.errors %}
         <td class="errors">{{ form.nome.errors }}</td>
         {% endif %}
       </tr><tr>
-        <th>{{ form.data_nasc.label }}:</th>
+        <th>* {{ form.data_nasc.label }}:</th>
         <td>{{ form.data_nasc }}</td>
         {% if form.data_nasc.errors %}
         <td class="errors">{{ form.data_nasc.errors }}</td>
@@ -54,13 +54,13 @@
   <table>
     <tbody>
       <tr>
-        <th>{{ form.logradouro.label }}:</th>
+        <th>* {{ form.logradouro.label }}:</th>
         <td>{{ form.logradouro }}</td>
         {% if form.logradouro.errors %}
         <td class="errors">{{ form.logradouro.errors }}</td>
         {% endif %}
       </tr><tr>
-        <th>{{ form.cidade.label }}:</th>
+        <th>* {{ form.cidade.label }}:</th>
         <td>{{ form.cidade }}</td>
         {% if form.cidade.errors %}
         <td class="errors">{{ form.cidade.errors }}</td>

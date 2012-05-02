@@ -1,16 +1,22 @@
 {% extends "base.html" %}
 {% block title %}{% if object %}Atualizando{% else %}Criando{% endif %} Funcionário{% endblock %}
+
+{% block extrahead %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.maskedinput-1.3.js"></script>
+<script type="text/javascript">
+  $(function(e) {
+     $('#id_cpf').mask('999.999.999-99');
+  });
+</script>
+{% endblock %}
+
 {% block conteudo %}
 <h3>
   {% if object %}Atualizando{% else %}Criando{% endif %} Funcionário
 </h3>
 
 <form method="post" action=".">
-  {% csrf_token %}
-
-  <table>
-    {{ form.as_table }}
-  </table>
+  {% include "form_snippet.html" %}
   <input type="button" value="Voltar" onclick="history.go(-1)">
   <input class="green button" type="submit" value="{% if object %}Atualizar{% else %}Criar{% endif %}" />
 </form>

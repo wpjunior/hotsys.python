@@ -35,4 +35,5 @@ urlpatterns = patterns(
     url(r'^consumo/(?P<pk>\d+)/$', ConsumoQuarto.as_view()),
     url(r'^finalizar/(?P<pk>\d+)/$', FinalizarQuarto.as_view()),
     url(r'^relatorio/$', RelatorioEstadiasView.as_view()),
+    url(r'^estadia/(?P<pk>\d+)/$', DetalheEstadia.as_view()),
 )

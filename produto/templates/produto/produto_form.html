@@ -6,12 +6,7 @@
 </h3>
 
 <form method="post" action=".">
-  {% csrf_token %}
-
-  <table>
-    {{ form.as_table }}
-  </table>
-
+  {% include "form_snippet.html" %}
   <input type="submit" value="{% if object %}Atualizar{% else %}Criar{% endif %}" />
 </form>
 {% endblock %}

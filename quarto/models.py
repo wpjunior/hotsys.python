@@ -81,6 +81,11 @@ class Estadia(models.Model):
     quarto = models.ForeignKey(Quarto,
                                related_name="quarto utilizada")
 
+    pre_pago = models.DecimalField(
+        decimal_places=2, max_digits=10,
+        verbose_name="Valor pré-pago",
+        blank=True, null=True)
+
     class Meta:
         db_table = "estadia"
 
@@ -95,8 +100,15 @@ class Estadia(models.Model):
         else:
             f = datetime.datetime.now()
 
-        #TODO: implementar regra de negocio do horario
-        return (f - self.data_inicial).days
+        dias = (f - self.data_inicial).days
+
+        if f.time() > datetime.time(14, 00):
+            dias += 1
+
+        if dias == 0:
+            return 1
+        else:
+            return dias
 
     @property
     def danos(self):
@@ -137,9 +149,10 @@ class Estadia(models.Model):
         return self.qtde_dias * self.quarto.preco
 
     @property
-    def total_pagar(self):
+    def valor_total(self):
         """
-        Total a pagar da estadia
+        Valor total dos serviços
+        hospedagem + produtos + danos
         """
         total = Decimal('0.00')
         t_danos = self.total_danos
@@ -157,6 +170,19 @@ class Estadia(models.Model):
 
         return total
 
+    @property
+    def total_pagar(self):
+        """
+        Total a pagar da estadia
+        considerando o valor pré-pago na reserva
+        """
+        total = self.valor_total
+
+        if self.pre_pago:
+            total -= self.pre_pago
+
+        return total
+
     def finalizar(self):
         self.data_final = datetime.datetime.now()
         self.finalizada = True
@@ -165,6 +191,10 @@ class Estadia(models.Model):
         self.quarto.estadia_atual = None
         self.quarto.estado = 'l' #Livre
         self.quarto.save()
+
+
+    def get_absolute_url(self):
+        return "/quarto/estadia/%d/" % self.id
 
 class Dano(models.Model):
     estadia = models.ForeignKey("Estadia")
